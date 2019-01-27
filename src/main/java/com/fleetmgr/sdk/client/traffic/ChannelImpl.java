@@ -1,6 +1,5 @@
 package com.fleetmgr.sdk.client.traffic;
 
-import java.util.logging.Level;
 import com.fleetmgr.interfaces.Result;
 import com.fleetmgr.interfaces.ValidateChannelRequest;
 import com.fleetmgr.interfaces.ValidateChannelResponse;
@@ -8,6 +7,7 @@ import com.fleetmgr.sdk.client.traffic.socket.Socket;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.logging.Level;
 
 public class ChannelImpl implements Channel, Socket.Listener {
 

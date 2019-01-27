@@ -5,6 +5,7 @@ import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.traffic.Channel;
 import com.fleetmgr.sdk.client.traffic.ChannelImpl;
 import com.fleetmgr.sdk.client.traffic.socket.Socket;
+import com.fleetmgr.sdk.client.traffic.socket.TcpSocket;
 import com.fleetmgr.sdk.client.traffic.socket.UdpSocket;
 import java.util.logging.Level;
 
@@ -54,7 +55,7 @@ public class ChannelsHandler {
             try {
                 log(Level.INFO, "Opening channel, id: " + c.getId());
 
-                Socket socket = new UdpSocket(executor);
+                Socket socket = buildSocket(c);
                 ChannelImpl channel = new ChannelImpl(c.getId(), socket);
                 channel.open(c.getHost(), c.getPort(), c.getKey());
 
@@ -67,6 +68,35 @@ public class ChannelsHandler {
             }
         }
         return opened;
+    }
+
+    private Socket buildSocket(ChannelResponse c) {
+        switch (c.getProtocol()) {
+            case UDP:
+                switch (c.getSecurity()) {
+                    case PLAIN_TEXT:
+                        return new UdpSocket(executor);
+
+                    case TLS:
+                        log(Level.SEVERE, "UDP Encryption not supported");
+                        return null;
+                }
+                break;
+
+            case TCP:
+                switch (c.getSecurity()) {
+                    case PLAIN_TEXT:
+                        return new TcpSocket(executor);
+
+                    case TLS:
+                        log(Level.SEVERE, "TCP Encryption not supported");
+                        return null;
+                }
+                break;
+        }
+        log(Level.SEVERE, "Unexpected channel type: " +
+                c.getProtocol() + ":" + c.getSecurity());
+        return null;
     }
 
     public void closeChannels(Collection<Long> channels) {

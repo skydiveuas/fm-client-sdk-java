@@ -90,7 +90,7 @@ public class HttpsClient {
     }
 
     static {
-        // TODO verify if it is really needed
+        // TODO remove this after tests!
         disableSslVerification();
     }
 

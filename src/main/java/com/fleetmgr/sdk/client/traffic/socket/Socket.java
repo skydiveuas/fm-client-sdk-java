@@ -1,9 +1,9 @@
 package com.fleetmgr.sdk.client.traffic.socket;
 
-import java.util.logging.Level;
 import com.fleetmgr.interfaces.Protocol;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -11,6 +11,8 @@ import java.io.IOException;
  * Description:
  */
 public abstract class Socket {
+
+    static final int BUFFER_SIZE = 2048;
 
     public interface Listener {
         void onReceived(byte[] data, int size);

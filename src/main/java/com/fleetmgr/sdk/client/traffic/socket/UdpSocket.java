@@ -35,7 +35,7 @@ public class UdpSocket extends Socket {
 
     @Override
     public void startReading() {
-        startReception();
+        executor.execute(this::receptionThread);
     }
 
     @Override
@@ -61,23 +61,21 @@ public class UdpSocket extends Socket {
         return Protocol.UDP;
     }
 
-    private void startReception() {
-        executor.execute(() -> {
-            byte[] buffer = new byte[1024];
-            DatagramPacket datagramPacket = new DatagramPacket(buffer, 1024);
-            while (!socket.isClosed()) {
-                try {
-                    socket.receive(datagramPacket);
-                    listener.onReceived(
-                            datagramPacket.getData(),
-                            datagramPacket.getLength());
-                } catch (IOException e) {
-                    if (!socket.isClosed()) {
-                        e.printStackTrace();
-                    }
-                    break;
+    private void receptionThread() {
+        byte[] buffer = new byte[BUFFER_SIZE];
+        DatagramPacket datagramPacket = new DatagramPacket(buffer, BUFFER_SIZE);
+        while (!socket.isClosed()) {
+            try {
+                socket.receive(datagramPacket);
+                listener.onReceived(
+                        datagramPacket.getData(),
+                        datagramPacket.getLength());
+            } catch (IOException e) {
+                if (!socket.isClosed()) {
+                    e.printStackTrace();
                 }
+                break;
             }
-        });
+        }
     }
 }
