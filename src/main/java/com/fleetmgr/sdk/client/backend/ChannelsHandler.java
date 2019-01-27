@@ -6,6 +6,7 @@ import com.fleetmgr.sdk.client.traffic.Channel;
 import com.fleetmgr.sdk.client.traffic.ChannelImpl;
 import com.fleetmgr.sdk.client.traffic.socket.Socket;
 import com.fleetmgr.sdk.client.traffic.socket.TcpSocket;
+import com.fleetmgr.sdk.client.traffic.socket.TlsTcpSocket;
 import com.fleetmgr.sdk.client.traffic.socket.UdpSocket;
 import java.util.logging.Level;
 
@@ -89,8 +90,7 @@ public class ChannelsHandler {
                         return new TcpSocket(executor);
 
                     case TLS:
-                        log(Level.SEVERE, "TCP Encryption not supported");
-                        return null;
+                        return new TlsTcpSocket(executor);
                 }
                 break;
         }
