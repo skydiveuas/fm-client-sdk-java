@@ -106,7 +106,7 @@ public class ChannelsHandler {
             if (s != null) {
                 s.close();
             } else {
-                log(Level.INFO, "Warning, trying to close not existing channel, id: " + c);
+                log(Level.WARNING, "Warning, trying to close not existing channel, id: " + c);
             }
         }
     }

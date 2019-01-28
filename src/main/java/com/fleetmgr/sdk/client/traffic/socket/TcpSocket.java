@@ -27,10 +27,15 @@ public class TcpSocket extends Socket {
 
     @Override
     public void connect(String ip, int port) throws IOException {
-        socket = new java.net.Socket();
-        socket.connect(new InetSocketAddress(ip, port), 3000);
+        socket = connectImpl(ip, port);
         outputStream = new DataOutputStream(socket.getOutputStream());
         inputStream = new DataInputStream(socket.getInputStream());
+    }
+
+    protected java.net.Socket connectImpl(String ip, int port) throws IOException {
+        java.net.Socket s = new java.net.Socket();
+        s.connect(new InetSocketAddress(ip, port), 3000);
+        return s;
     }
 
     @Override
@@ -69,13 +74,17 @@ public class TcpSocket extends Socket {
         byte[] buffer = new byte[BUFFER_SIZE];
         while (!socket.isClosed()) {
             try {
-                int len = inputStream.available();
-                if (len > BUFFER_SIZE) len = BUFFER_SIZE;
+                int r = inputStream.read(buffer, 0, 1);
 
-                int dataSize = inputStream.read(buffer, 0, len);
+                if (r > 0) {
+                    int len = inputStream.available();
+                    if (len > BUFFER_SIZE) len = BUFFER_SIZE - 1;
 
-                if (dataSize > 0) {
-                    listener.onReceived(buffer, dataSize);
+                    int dataSize = inputStream.read(buffer, 1, len) + 1;
+
+                    if (dataSize > 0) {
+                        listener.onReceived(buffer, dataSize);
+                    }
                 }
 
                 try {

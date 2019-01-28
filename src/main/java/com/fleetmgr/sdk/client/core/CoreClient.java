@@ -59,6 +59,6 @@ public class CoreClient {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss.SSS");
 
     public void trace(String message) {
-        System.out.println(sdf.format(new Timestamp(System.currentTimeMillis())) + ": " + message);
+        System.out.println(sdf.format(new Timestamp(System.currentTimeMillis())) + " " + message);
     }
 }
