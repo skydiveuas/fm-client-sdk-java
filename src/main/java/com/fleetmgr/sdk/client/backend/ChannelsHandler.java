@@ -8,11 +8,10 @@ import com.fleetmgr.sdk.client.traffic.socket.Socket;
 import com.fleetmgr.sdk.client.traffic.socket.TcpSocket;
 import com.fleetmgr.sdk.client.traffic.socket.TlsTcpSocket;
 import com.fleetmgr.sdk.client.traffic.socket.UdpSocket;
-import java.util.logging.Level;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
+import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -64,7 +63,7 @@ public class ChannelsHandler {
                 opened.put(c.getId(), channel);
 
                 log(Level.INFO, "Channel id: " + c.getId() + " validated");
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -27,7 +27,7 @@ public abstract class Socket {
         this.listener = listener;
     }
 
-    public abstract void connect(String ip, int port) throws IOException;
+    public abstract void connect(String ip, int port) throws Exception;
 
     public abstract void startReading();
 

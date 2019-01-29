@@ -30,7 +30,7 @@ public class ChannelImpl implements Channel, Socket.Listener {
         this.listener = listener;
     }
 
-    public void open(String ip, int port, String key) throws IOException {
+    public void open(String ip, int port, String key) throws Exception {
         socket.setListener(this);
         socket.connect(ip, port);
 
