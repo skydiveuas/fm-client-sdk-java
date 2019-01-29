@@ -70,10 +70,10 @@ public class ChannelsHandler {
         return opened;
     }
 
-    private Socket buildSocket(ChannelResponse c) {
-        switch (c.getProtocol()) {
+    private Socket buildSocket(ChannelResponse parameters) {
+        switch (parameters.getProtocol()) {
             case UDP:
-                switch (c.getSecurity()) {
+                switch (parameters.getSecurity()) {
                     case PLAIN_TEXT:
                         return new UdpSocket(executor);
 
@@ -84,7 +84,7 @@ public class ChannelsHandler {
                 break;
 
             case TCP:
-                switch (c.getSecurity()) {
+                switch (parameters.getSecurity()) {
                     case PLAIN_TEXT:
                         return new TcpSocket(executor);
 
@@ -94,7 +94,7 @@ public class ChannelsHandler {
                 break;
         }
         log(Level.SEVERE, "Unexpected channel type: " +
-                c.getProtocol() + ":" + c.getSecurity());
+                parameters.getProtocol() + ":" + parameters.getSecurity());
         return null;
     }
 
