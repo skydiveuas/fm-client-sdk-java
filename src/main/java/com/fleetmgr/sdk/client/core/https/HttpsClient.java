@@ -91,10 +91,10 @@ public class HttpsClient {
 
     static {
         // TODO remove this after tests!
-        disableSslVerification();
+        disableSslCertVerification();
     }
 
-    private static void disableSslVerification() {
+    private static void disableSslCertVerification() {
         try
         {
             // Create a trust manager that does not validate certificate chains

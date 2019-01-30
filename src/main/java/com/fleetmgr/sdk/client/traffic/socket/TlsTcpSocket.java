@@ -1,8 +1,10 @@
 package com.fleetmgr.sdk.client.traffic.socket;
 
 import javax.net.ssl.*;
-import java.io.FileInputStream;
-import java.security.KeyStore;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -16,37 +18,41 @@ public class TlsTcpSocket extends TcpSocket {
 
     public TlsTcpSocket(ExecutorService executor) {
         super(executor);
-        factory = null;
     }
 
     @Override
     public java.net.Socket connectImpl(String ip, int port) throws Exception {
-        if (factory == null) {
-            // initialise the keystore
-            char[] password = "password".toCharArray();
-            KeyStore ks = KeyStore.getInstance("JKS");
-            FileInputStream fis = new FileInputStream("core.jks");
-            ks.load(fis, password);
+        SSLSocket socket = (SSLSocket)factory.createSocket(ip, port);
+        socket.startHandshake();
+        return socket;
+    }
 
-            // setup the key manager factory
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-            kmf.init(ks, password);
+    static {
+        // TODO remove it after tests
+        disableTslCertVerification();
+    }
 
-            // setup the trust manager factory
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-            tmf.init(ks);
+    private static void disableTslCertVerification() {
+        try {
+            // Create a trust manager that does not validate certificate chains
+            TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                }
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                }
+            }
+            };
 
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
-
+            sslContext.init(null, trustAllCerts, new SecureRandom());
             factory = sslContext.getSocketFactory();
+
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
         }
-
-        SSLSocket socket = (SSLSocket)factory.createSocket(ip, port);
-
-        socket.startHandshake();
-
-        return socket;
     }
 }
 
