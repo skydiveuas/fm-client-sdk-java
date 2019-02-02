@@ -83,7 +83,7 @@ public class TcpSocket extends Socket {
                 int r = inputStream.read(buffer, 0, 1);
                 if (r > 0) {
                     int len = inputStream.available();
-                    if (len > BUFFER_SIZE) len = BUFFER_SIZE - 1;
+                    if (len > BUFFER_SIZE - 1) len = BUFFER_SIZE - 1;
                     int dataSize = inputStream.read(buffer, 1, len) + 1;
                     listener.onReceived(buffer, dataSize);
                 }
