@@ -87,12 +87,17 @@ public class TcpSocket extends Socket {
                     int dataSize = inputStream.read(buffer, 1, len) + 1;
                     listener.onReceived(buffer, dataSize);
                 }
+                else
+                {
+                    Thread.sleep(1);
+                }
 
             } catch (IOException e) {
                 if (!closed.get()) {
                     e.printStackTrace();
                 }
                 break;
+            } catch (InterruptedException ignored) {
             }
         }
 
