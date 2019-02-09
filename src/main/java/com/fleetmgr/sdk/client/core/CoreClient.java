@@ -10,8 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.util.logging.Level;
 
 import static com.google.api.HttpRule.PatternCase.GET;
 import static com.google.api.HttpRule.PatternCase.POST;
@@ -23,10 +22,14 @@ import static com.google.api.HttpRule.PatternCase.POST;
  */
 public class CoreClient {
 
+    public interface Listener {
+        void trace(Level level, String message);
+    }
+
     private final HttpsClient client;
 
-    public CoreClient(String address, String key) {
-        this.client = new HttpsClient(address, key, this::trace);
+    public CoreClient(String address, String key, Listener listener) {
+        this.client = new HttpsClient(address, key, listener::trace);
     }
 
     public AttachResponse attach() throws IOException {
@@ -54,11 +57,5 @@ public class CoreClient {
         ListDevicesResponse.Builder builder = ListDevicesResponse.newBuilder();
         JsonFormat.parser().ignoringUnknownFields().merge(responseJson.toString(), builder);
         return builder.build();
-    }
-
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss.SSS");
-
-    public void trace(String message) {
-        System.out.println(sdf.format(new Timestamp(System.currentTimeMillis())) + " " + message);
     }
 }
