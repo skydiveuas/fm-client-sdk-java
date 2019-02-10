@@ -79,7 +79,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
 
     public void openFacadeConnection(String ip, int port) throws SSLException {
         SslContext sslContext =
-                buildSslContext("./test/facade_cert.crt",
+                buildSslContext("../test/facade_cert.crt",
                         null,
                         null);
 

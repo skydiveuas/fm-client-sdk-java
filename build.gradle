@@ -20,9 +20,9 @@ repositories {
 }
 
 dependencies {
-    compile 'io.grpc:grpc-netty-shaded:1.18.0'
-    compile 'io.grpc:grpc-protobuf:1.18.0'
-    compile 'io.grpc:grpc-stub:1.18.0'
+    compile 'io.grpc:grpc-netty-shaded:1.17.1'
+    compile 'io.grpc:grpc-protobuf:1.17.1'
+    compile 'io.grpc:grpc-stub:1.17.1'
 
     compile 'com.google.protobuf:protobuf-java-util:3.4.0'
     compile 'org.json:json:20180813'
