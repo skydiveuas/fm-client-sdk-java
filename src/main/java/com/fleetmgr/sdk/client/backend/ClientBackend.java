@@ -1,6 +1,5 @@
 package com.fleetmgr.sdk.client.backend;
 
-import java.util.logging.Level;
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.interfaces.facade.control.ClientMessage;
 import com.fleetmgr.interfaces.facade.control.ControlMessage;
@@ -21,6 +20,7 @@ import javax.net.ssl.SSLException;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -79,7 +79,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
 
     public void openFacadeConnection(String ip, int port) throws SSLException {
         SslContext sslContext =
-                buildSslContext("grpc_facade.crt",
+                buildSslContext("../test/facade_cert.crt",
                         null,
                         null);
 
