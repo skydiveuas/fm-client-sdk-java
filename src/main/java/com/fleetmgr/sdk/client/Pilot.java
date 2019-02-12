@@ -1,9 +1,8 @@
 package com.fleetmgr.sdk.client;
 
-import com.fleetmgr.sdk.client.state.pilot.Disconnected;
 import com.fleetmgr.interfaces.ConnectionState;
-import com.fleetmgr.interfaces.Device;
 import com.fleetmgr.interfaces.ListDevicesResponse;
+import com.fleetmgr.sdk.client.state.pilot.Disconnected;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -15,9 +14,12 @@ import java.util.concurrent.ExecutorService;
  */
 public class Pilot extends Client {
 
-    public Pilot(String coreAddress, String key, Listener listener,
-                 ExecutorService executor) {
-        super(coreAddress, key, listener, executor);
+    public Pilot(ExecutorService executor, String configPath, Listener listener) throws IOException {
+        this(executor, ClientConfig.load(configPath), listener);
+    }
+
+    public Pilot(ExecutorService executor, ClientConfig clientConfig, Listener listener) {
+        super(executor, clientConfig, listener);
         setState(new Disconnected(this, backend, listener));
     }
 

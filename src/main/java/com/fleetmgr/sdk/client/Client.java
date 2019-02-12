@@ -1,14 +1,15 @@
 package com.fleetmgr.sdk.client;
 
-import java.util.logging.Level;
+import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.sdk.client.backend.ClientBackend;
 import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.Event;
 import com.fleetmgr.sdk.client.event.output.facade.FacadeEvent;
-import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.sdk.system.machine.StateMachine;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
+import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -27,13 +28,17 @@ public abstract class Client extends StateMachine<Event> {
 
     protected ClientBackend backend;
 
-    Client(String coreAddress, String key, Listener listener, ExecutorService executor) {
+    Client(ExecutorService executor, String configPath, Listener listener) throws IOException {
+        this(executor, ClientConfig.load(configPath), listener);
+    }
+
+    Client(ExecutorService executor, ClientConfig clientConfig, Listener listener) {
         super(executor, null);
         this.listener = listener;
 
-        CoreClient coreClient = new CoreClient(coreAddress, key, this::log);
+        CoreClient coreClient = new CoreClient(clientConfig, this::log);
 
-        this.backend = new ClientBackend(this, listener, executor, coreClient);
+        this.backend = new ClientBackend(executor, clientConfig,this, listener, coreClient);
     }
 
     @Override

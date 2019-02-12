@@ -27,6 +27,8 @@ dependencies {
     compile 'com.google.protobuf:protobuf-java-util:3.4.0'
     compile 'org.json:json:20180813'
 
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
+
     testCompile 'junit:junit:4.12'
 }
 

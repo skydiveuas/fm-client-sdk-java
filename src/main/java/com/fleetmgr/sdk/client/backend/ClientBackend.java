@@ -5,6 +5,7 @@ import com.fleetmgr.interfaces.facade.control.ClientMessage;
 import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.interfaces.facade.control.FacadeServiceGrpc;
 import com.fleetmgr.sdk.client.Client;
+import com.fleetmgr.sdk.client.ClientConfig;
 import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
@@ -29,10 +30,11 @@ import java.util.logging.Level;
  */
 public class ClientBackend implements StreamObserver<ControlMessage> {
 
+    private final ExecutorService executor;
+    private final ClientConfig clientConfig;
+
     private Client client;
     private Client.Listener clientListener;
-
-    private ExecutorService executor;
 
     private CoreClient core;
 
@@ -42,14 +44,16 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     private ManagedChannel channel;
     private StreamObserver<ClientMessage> toFacade;
 
-    public ClientBackend(Client client,
+    public ClientBackend(ExecutorService executor,
+                         ClientConfig clientConfig,
+                         Client client,
                          Client.Listener clientListener,
-                         ExecutorService executor,
                          CoreClient core) {
+        this.executor = executor;
+        this.clientConfig = clientConfig;
+
         this.client = client;
         this.clientListener = clientListener;
-
-        this.executor = executor;
 
         this.core = core;
 
@@ -79,7 +83,8 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
 
     public void openFacadeConnection(String ip, int port) throws SSLException {
         SslContext sslContext =
-                buildSslContext("../test/facade_cert.crt",
+                buildSslContext(
+                        clientConfig.facadeCertPath,
                         null,
                         null);
 

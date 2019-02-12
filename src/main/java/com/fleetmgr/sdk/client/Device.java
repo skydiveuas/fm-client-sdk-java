@@ -2,6 +2,7 @@ package com.fleetmgr.sdk.client;
 
 import com.fleetmgr.sdk.client.state.device.Disconnected;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -11,9 +12,12 @@ import java.util.concurrent.ExecutorService;
  */
 public class Device extends Client {
 
-    public Device(String coreAddress, String key,
-                  Listener listener, ExecutorService executor) {
-        super(coreAddress, key, listener, executor);
+    public Device(ExecutorService executor, String configPath, Listener listener) throws IOException {
+        this(executor, ClientConfig.load(configPath), listener);
+    }
+
+    public Device(ExecutorService executor, ClientConfig clientConfig, Listener listener) {
+        super(executor, clientConfig, listener);
         setState(new Disconnected(this, backend, listener));
     }
 }
