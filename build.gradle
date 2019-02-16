@@ -35,7 +35,7 @@ dependencies {
 sourceSets {
     main {
         proto {
-            srcDir 'src/main/fm-client-proto'
+            srcDir 'src/main/fm-service-proto'
         }
         java {
             srcDirs 'src/main/grpc'
