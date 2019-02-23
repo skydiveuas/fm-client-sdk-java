@@ -17,7 +17,8 @@ import java.util.Properties;
 public class ClientConfig {
 
     public final String apiKey;
-    public final String coreAddress;
+    public final String coreHost;
+    public final int corePort;
     public final String facadeCertPath;
 
     public static ClientConfig load(String path) throws IOException {
@@ -26,27 +27,32 @@ public class ClientConfig {
 
         // load from file
         String apiKey = config.getProperty("apiKey");
-        String coreAddress = config.getProperty("coreAddress");
+        String coreHost = config.getProperty("coreHost");
+        String corePort = config.getProperty("corePort");
         String facadeCertPath = config.getProperty("facadeCertPath");
 
         // override with environmental variables
-        String val = System.getenv("COM_FLEETMGR_EDGE_DISCOVERY_PORT");
+        String val = System.getenv("COM_FLEETMGR_API_KEY");
         if (val != null) apiKey = val;
-        val = System.getenv("COM_FLEETMGR_EDGE_DISCOVERY_PORT");
-        if (val != null) coreAddress = val;
+        val = System.getenv("COM_FLEETMGR_EDGE_CORE_HOST");
+        if (val != null) coreHost = val;
+        val = System.getenv("COM_FLEETMGR_EDGE_CORE_PORT");
+        if (val != null) corePort = val;
         val = System.getenv("COM_FLEETMGR_EDGE_DISCOVERY_PORT");
         if (val != null) facadeCertPath = val;
 
         // check if all parameters are set
         if (apiKey == null
-                || coreAddress == null
+                || coreHost == null
+                || corePort == null
                 || facadeCertPath == null) {
             throw new IOException("Not all configuration parameters defined");
         }
 
         return ClientConfig.builder()
                 .apiKey(apiKey)
-                .coreAddress(coreAddress)
+                .coreHost(coreHost)
+                .corePort(Integer.valueOf(corePort))
                 .facadeCertPath(facadeCertPath)
                 .build();
     }

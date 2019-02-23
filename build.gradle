@@ -19,15 +19,18 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    compile 'io.grpc:grpc-netty-shaded:1.17.1'
-    compile 'io.grpc:grpc-protobuf:1.17.1'
-    compile 'io.grpc:grpc-stub:1.17.1'
+def grpcVersion = '1.18.0'
+def protobufVersion = '3.6.1'
 
-    compile 'com.google.protobuf:protobuf-java-util:3.4.0'
+dependencies {
+    compile "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    compile "io.grpc:grpc-protobuf:${grpcVersion}"
+    compile "io.grpc:grpc-stub:${grpcVersion}"
+    compile "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+
     compile 'org.json:json:20180813'
 
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
+    compile 'org.projectlombok:lombok:1.18.4'
 
     testCompile 'junit:junit:4.12'
 }
@@ -44,18 +47,12 @@ sourceSets {
 }
 
 protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:3.5.1-1"
-    }
+    protoc { artifact = "com.google.protobuf:protoc:${protobufVersion}" }
     plugins {
-        grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.13.1'
-        }
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}" }
     }
     generateProtoTasks {
-        all()*.plugins {
-            grpc {}
-        }
+        all()*.plugins { grpc {} }
     }
     generatedFilesBaseDir = "$projectDir/src"
 }

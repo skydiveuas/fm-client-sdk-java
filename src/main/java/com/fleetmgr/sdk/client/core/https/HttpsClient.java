@@ -34,7 +34,7 @@ public class HttpsClient {
     private final Listener listener;
 
     public HttpsClient(ClientConfig clientConfig, Listener listener) {
-        this.address = clientConfig.coreAddress;
+        this.address = "https://" + clientConfig.coreHost + ":" + clientConfig.corePort;
         this.apiKey = clientConfig.apiKey;
         this.listener = listener;
     }
