@@ -4,7 +4,8 @@ import com.fleetmgr.interfaces.AttachResponse;
 import com.fleetmgr.interfaces.ListDevicesResponse;
 import com.fleetmgr.interfaces.OperateRequest;
 import com.fleetmgr.interfaces.OperateResponse;
-import com.fleetmgr.sdk.client.ClientConfig;
+import com.fleetmgr.sdk.client.configuration.ClientConfig;
+import com.fleetmgr.sdk.client.configuration.Configuration;
 import com.fleetmgr.sdk.client.core.https.HttpsClient;
 import com.google.protobuf.util.JsonFormat;
 import org.json.JSONArray;
@@ -29,8 +30,8 @@ public class CoreClient {
 
     private final HttpsClient client;
 
-    public CoreClient(ClientConfig clientConfig, Listener listener) {
-        this.client = new HttpsClient(clientConfig, listener::trace);
+    public CoreClient(Configuration configuration, Listener listener) {
+        this.client = new HttpsClient(configuration, listener::trace);
     }
 
     public AttachResponse attach() throws IOException {

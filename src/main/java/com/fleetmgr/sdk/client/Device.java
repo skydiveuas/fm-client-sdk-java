@@ -1,5 +1,7 @@
 package com.fleetmgr.sdk.client;
 
+import com.fleetmgr.sdk.client.configuration.ClientConfig;
+import com.fleetmgr.sdk.client.configuration.Configuration;
 import com.fleetmgr.sdk.client.state.device.Disconnected;
 
 import java.io.IOException;
@@ -16,8 +18,8 @@ public class Device extends Client {
         this(executor, ClientConfig.load(configPath), listener);
     }
 
-    public Device(ExecutorService executor, ClientConfig clientConfig, Listener listener) {
-        super(executor, clientConfig, listener);
+    public Device(ExecutorService executor, Configuration configuration, Listener listener) {
+        super(executor, configuration, listener);
         setState(new Disconnected(this, backend, listener));
     }
 }

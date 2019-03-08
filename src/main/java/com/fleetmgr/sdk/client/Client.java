@@ -2,6 +2,8 @@ package com.fleetmgr.sdk.client;
 
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.sdk.client.backend.ClientBackend;
+import com.fleetmgr.sdk.client.configuration.ClientConfig;
+import com.fleetmgr.sdk.client.configuration.Configuration;
 import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.Event;
 import com.fleetmgr.sdk.client.event.output.facade.FacadeEvent;
@@ -32,13 +34,13 @@ public abstract class Client extends StateMachine<Event> {
         this(executor, ClientConfig.load(configPath), listener);
     }
 
-    Client(ExecutorService executor, ClientConfig clientConfig, Listener listener) {
+    Client(ExecutorService executor, Configuration configuration, Listener listener) {
         super(executor, null);
         this.listener = listener;
 
-        CoreClient coreClient = new CoreClient(clientConfig, this::log);
+        CoreClient coreClient = new CoreClient(configuration, this::log);
 
-        this.backend = new ClientBackend(executor, clientConfig,this, listener, coreClient);
+        this.backend = new ClientBackend(executor, configuration,this, listener, coreClient);
     }
 
     @Override
