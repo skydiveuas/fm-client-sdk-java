@@ -40,7 +40,7 @@ public class Configuration {
                 value = properties.getProperty(key);
             }
             if (value == null) {
-                throw new IOException("Could not load required configuration parameter: " + key);
+                throw new IOException("Could not load required configuration parameter: " + key + " or ENV: " + envKey);
             }
             values.put(key, value);
         }
@@ -66,6 +66,6 @@ public class Configuration {
     }
 
     public boolean getBoolean(String key) {
-        return Boolean.valueOf(key);
+        return Boolean.valueOf(values.get(key));
     }
 }
