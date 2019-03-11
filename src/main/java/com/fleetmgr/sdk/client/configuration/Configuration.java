@@ -42,7 +42,14 @@ public class Configuration {
             if (value == null) {
                 throw new IOException("Could not load required configuration parameter: " + key);
             }
-            values.put(key, key);
+            values.put(key, value);
+        }
+        if (properties != null) {
+            for (String k : properties.stringPropertyNames()) {
+                if (!values.containsKey(k)) {
+                    values.put(k, properties.getProperty(k));
+                }
+            }
         }
     }
 
