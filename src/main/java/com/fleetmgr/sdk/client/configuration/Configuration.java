@@ -31,6 +31,10 @@ public class Configuration {
         }
     }
 
+    public Configuration(HashMap<String, String> values) {
+        this.values = values;
+    }
+
     private Configuration(Properties properties, String envTag, List<String> required) throws IOException {
         values = new HashMap<>();
         for (String key : required) {
