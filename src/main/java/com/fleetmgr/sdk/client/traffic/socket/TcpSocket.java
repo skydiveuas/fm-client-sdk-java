@@ -61,9 +61,13 @@ public class TcpSocket extends Socket {
     @Override
     public void disconnect() {
         try {
+            System.out.println("AAAAA");
             closed.set(true);
+            System.out.println("BBBBB");
             outputStream.close();
+            System.out.println("CCCCC");
             socket.close();
+            System.out.println("DDDDD");
         } catch (IOException e) {
             e.printStackTrace();
         }
