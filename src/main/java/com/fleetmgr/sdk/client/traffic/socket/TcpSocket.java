@@ -83,6 +83,7 @@ public class TcpSocket extends Socket {
     private void receptionThread() {
         byte[] buffer = new byte[BUFFER_SIZE];
         while (!closed.get()) {
+            System.out.println("111XXX");
             try {
                 int r = inputStream.read(buffer, 0, 1);
                 if (r > 0) {
@@ -97,6 +98,7 @@ public class TcpSocket extends Socket {
                 }
 
             } catch (IOException e) {
+                System.out.println("222XXX");
                 if (!closed.get()) {
                     e.printStackTrace();
                 }
@@ -105,7 +107,7 @@ public class TcpSocket extends Socket {
             }
         }
 
-        System.out.println("XXXXX");
+        System.out.println("333XXX");
 
         try {
             inputStream.close();
