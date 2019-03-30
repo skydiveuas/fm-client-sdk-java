@@ -61,13 +61,9 @@ public class TcpSocket extends Socket {
     @Override
     public void disconnect() {
         try {
-            System.out.println("AAAAA");
             closed.set(true);
-            System.out.println("BBBBB");
             outputStream.close();
-            System.out.println("CCCCC");
             inputStream.close();
-            System.out.println("DDDDD");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,7 +79,6 @@ public class TcpSocket extends Socket {
     private void receptionThread() {
         byte[] buffer = new byte[BUFFER_SIZE];
         while (!closed.get()) {
-            System.out.println("111XXX");
             try {
                 int r = inputStream.read(buffer, 0, 1);
                 if (r > 0) {
@@ -98,7 +93,6 @@ public class TcpSocket extends Socket {
                 }
 
             } catch (IOException e) {
-                System.out.println("222XXX");
                 if (!closed.get()) {
                     e.printStackTrace();
                 }
@@ -106,7 +100,5 @@ public class TcpSocket extends Socket {
             } catch (InterruptedException ignored) {
             }
         }
-
-        System.out.println("333XXX");
     }
 }
