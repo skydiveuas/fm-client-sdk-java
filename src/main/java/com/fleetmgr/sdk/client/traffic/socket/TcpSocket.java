@@ -105,6 +105,8 @@ public class TcpSocket extends Socket {
             }
         }
 
+        System.out.println("XXXXX");
+
         try {
             inputStream.close();
         } catch (IOException e) {
