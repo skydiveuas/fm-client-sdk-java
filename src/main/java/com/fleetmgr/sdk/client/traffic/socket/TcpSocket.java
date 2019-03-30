@@ -66,7 +66,7 @@ public class TcpSocket extends Socket {
             System.out.println("BBBBB");
             outputStream.close();
             System.out.println("CCCCC");
-            socket.close();
+            inputStream.close();
             System.out.println("DDDDD");
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,11 +108,5 @@ public class TcpSocket extends Socket {
         }
 
         System.out.println("333XXX");
-
-        try {
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
