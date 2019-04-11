@@ -1,10 +1,8 @@
 package com.fleetmgr.sdk.client;
 
-import com.fleetmgr.sdk.client.configuration.ClientConfig;
-import com.fleetmgr.sdk.client.configuration.Configuration;
 import com.fleetmgr.sdk.client.state.device.Disconnected;
+import org.cfg4j.provider.ConfigurationProvider;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -14,11 +12,11 @@ import java.util.concurrent.ExecutorService;
  */
 public class Device extends Client {
 
-    public Device(ExecutorService executor, String configPath, Listener listener) throws IOException {
-        this(executor, ClientConfig.load(configPath), listener);
+    public Device(ExecutorService executor, String configPath, Listener listener) {
+        this(executor, loadConfigurationProvider(configPath), listener);
     }
 
-    public Device(ExecutorService executor, Configuration configuration, Listener listener) {
+    public Device(ExecutorService executor, ConfigurationProvider configuration, Listener listener) {
         super(executor, configuration, listener);
         setState(new Disconnected(this, backend, listener));
     }

@@ -4,10 +4,9 @@ import com.fleetmgr.interfaces.AttachResponse;
 import com.fleetmgr.interfaces.ListDevicesResponse;
 import com.fleetmgr.interfaces.OperateRequest;
 import com.fleetmgr.interfaces.OperateResponse;
-import com.fleetmgr.sdk.client.configuration.ClientConfig;
-import com.fleetmgr.sdk.client.configuration.Configuration;
 import com.fleetmgr.sdk.client.core.https.HttpsClient;
 import com.google.protobuf.util.JsonFormat;
+import org.cfg4j.provider.ConfigurationProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,7 +29,7 @@ public class CoreClient {
 
     private final HttpsClient client;
 
-    public CoreClient(Configuration configuration, Listener listener) {
+    public CoreClient(ConfigurationProvider configuration, Listener listener) {
         this.client = new HttpsClient(configuration, listener::trace);
     }
 

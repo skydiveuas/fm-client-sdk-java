@@ -2,14 +2,19 @@ package com.fleetmgr.sdk.client;
 
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.sdk.client.backend.ClientBackend;
-import com.fleetmgr.sdk.client.configuration.ClientConfig;
-import com.fleetmgr.sdk.client.configuration.Configuration;
 import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.Event;
 import com.fleetmgr.sdk.client.event.output.facade.FacadeEvent;
 import com.fleetmgr.sdk.system.machine.StateMachine;
+import org.cfg4j.provider.ConfigurationProvider;
+import org.cfg4j.provider.ConfigurationProviderBuilder;
+import org.cfg4j.source.ConfigurationSource;
+import org.cfg4j.source.context.filesprovider.ConfigFilesProvider;
+import org.cfg4j.source.files.FilesConfigurationSource;
 
-import java.io.IOException;
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 
@@ -30,11 +35,11 @@ public abstract class Client extends StateMachine<Event> {
 
     protected ClientBackend backend;
 
-    Client(ExecutorService executor, String configPath, Listener listener) throws IOException {
-        this(executor, ClientConfig.load(configPath), listener);
+    Client(ExecutorService executor, String configPath, Listener listener) {
+        this(executor, loadConfigurationProvider(configPath), listener);
     }
 
-    Client(ExecutorService executor, Configuration configuration, Listener listener) {
+    Client(ExecutorService executor, ConfigurationProvider configuration, Listener listener) {
         super(executor, null);
         this.listener = listener;
 
@@ -46,5 +51,19 @@ public abstract class Client extends StateMachine<Event> {
     @Override
     public void log(Level level, String message) {
         listener.log(level, message);
+    }
+
+    static ConfigurationProvider loadConfigurationProvider(String path) {
+        ConfigFilesProvider configFilesProvider = () -> Collections.singletonList(
+                Paths.get(new File(path).getAbsolutePath()));
+
+        ConfigurationSource source = new FilesConfigurationSource(configFilesProvider);
+
+        //ReloadStrategy reloadStrategy = new PeriodicalReloadStrategy(5, TimeUnit.MINUTES);
+
+        return new ConfigurationProviderBuilder()
+                .withConfigurationSource(source)
+                //.withReloadStrategy(reloadStrategy)
+                .build();
     }
 }

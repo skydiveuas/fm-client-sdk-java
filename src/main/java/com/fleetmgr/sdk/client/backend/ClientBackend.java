@@ -5,7 +5,6 @@ import com.fleetmgr.interfaces.facade.control.ClientMessage;
 import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.interfaces.facade.control.FacadeServiceGrpc;
 import com.fleetmgr.sdk.client.Client;
-import com.fleetmgr.sdk.client.configuration.Configuration;
 import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
@@ -16,6 +15,7 @@ import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
 import io.grpc.stub.StreamObserver;
+import org.cfg4j.provider.ConfigurationProvider;
 
 import javax.net.ssl.SSLException;
 import java.io.File;
@@ -31,7 +31,7 @@ import java.util.logging.Level;
 public class ClientBackend implements StreamObserver<ControlMessage> {
 
     private final ExecutorService executor;
-    private final Configuration configuration;
+    private final ConfigurationProvider configuration;
 
     private Client client;
     private Client.Listener clientListener;
@@ -45,7 +45,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     private StreamObserver<ClientMessage> toFacade;
 
     public ClientBackend(ExecutorService executor,
-                         Configuration configuration,
+                         ConfigurationProvider configuration,
                          Client client,
                          Client.Listener clientListener,
                          CoreClient core) {
@@ -84,7 +84,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public void openFacadeConnection(String ip, int port) throws SSLException {
         SslContext sslContext =
                 buildSslContext(
-                        configuration.getString("facadeCertPath"),
+                        configuration.getProperty("facadeCertPath", String.class),
                         null,
                         null);
 
