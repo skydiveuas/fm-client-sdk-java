@@ -1,13 +1,12 @@
 package com.fleetmgr.sdk.client.backend;
 
-import java.util.logging.Level;
-import com.fleetmgr.sdk.client.Client;
-import com.fleetmgr.sdk.client.Constants;
-import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.interfaces.facade.control.*;
+import com.fleetmgr.sdk.client.Client;
+import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.system.capsule.Timer;
 
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -35,9 +34,9 @@ public class HeartbeatHandler {
 
         lastReception.set(System.currentTimeMillis());
 
-        timer = client.executeEvery(this::onTimeout,
-                Constants.VERIFICATION_INTERVAL * 1000,
-                Constants.VERIFICATION_INTERVAL * 1000);
+        long supervisionInterval =
+                backend.getConfiguration().getProperty("supervision.intervalMs", Long.class);
+        timer = client.executeEvery(this::onTimeout, supervisionInterval, supervisionInterval);
     }
 
     public void end() {
@@ -61,8 +60,10 @@ public class HeartbeatHandler {
     }
 
     private void onTimeout() {
+        long supervisionTimeout =
+                backend.getConfiguration().getProperty("supervision.timeoutMs", Long.class);
         long silentTime = System.currentTimeMillis() - lastReception.get();
-        if (silentTime > Constants.MAX_SILENT_INTERVAL * 1000) {
+        if (silentTime > supervisionTimeout) {
             client.notifyEvent(new ConnectionEvent(ConnectionEvent.Type.LOST));
         }
     }

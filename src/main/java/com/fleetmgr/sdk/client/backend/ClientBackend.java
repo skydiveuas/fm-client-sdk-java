@@ -65,6 +65,10 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         return executor;
     }
 
+    public ConfigurationProvider getConfiguration() {
+        return configuration;
+    }
+
     public CoreClient getCore() {
         return core;
     }

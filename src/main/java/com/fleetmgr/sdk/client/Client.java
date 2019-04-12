@@ -56,14 +56,9 @@ public abstract class Client extends StateMachine<Event> {
     static ConfigurationProvider loadConfigurationProvider(String path) {
         ConfigFilesProvider configFilesProvider = () -> Collections.singletonList(
                 Paths.get(new File(path).getAbsolutePath()));
-
         ConfigurationSource source = new FilesConfigurationSource(configFilesProvider);
-
-        //ReloadStrategy reloadStrategy = new PeriodicalReloadStrategy(5, TimeUnit.MINUTES);
-
         return new ConfigurationProviderBuilder()
                 .withConfigurationSource(source)
-                //.withReloadStrategy(reloadStrategy)
                 .build();
     }
 }
