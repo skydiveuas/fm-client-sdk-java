@@ -115,8 +115,11 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     }
 
     public void send(ClientMessage message) {
-        trace("Sending:\n" + message + "@ " + client.getStateName());
-        toFacade.onNext(message);
+        ClientMessage verified = client.verifySending(message);
+        if (verified != null) {
+            trace("Sending:\n" + message + "@ " + client.getStateName());
+            toFacade.onNext(message);
+        }
     }
 
     @Override

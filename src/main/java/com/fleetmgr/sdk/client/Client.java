@@ -1,6 +1,7 @@
 package com.fleetmgr.sdk.client;
 
 import com.fleetmgr.interfaces.Location;
+import com.fleetmgr.interfaces.facade.control.ClientMessage;
 import com.fleetmgr.sdk.client.backend.ClientBackend;
 import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.Event;
@@ -51,6 +52,10 @@ public abstract class Client extends StateMachine<Event> {
     @Override
     public void log(Level level, String message) {
         listener.log(level, message);
+    }
+
+    public ClientMessage verifySending(ClientMessage message) {
+        return message;
     }
 
     static ConfigurationProvider loadConfigurationProvider(String path) {
