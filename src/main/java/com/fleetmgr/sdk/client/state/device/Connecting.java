@@ -1,12 +1,12 @@
 package com.fleetmgr.sdk.client.state.device;
 
+import com.fleetmgr.interfaces.AttachResponse;
+import com.fleetmgr.interfaces.facade.control.*;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
 import com.fleetmgr.sdk.client.event.output.facade.Error;
 import com.fleetmgr.sdk.client.state.State;
-import com.fleetmgr.interfaces.AttachResponse;
-import com.fleetmgr.interfaces.facade.control.*;
 
 import java.io.IOException;
 
@@ -35,9 +35,9 @@ public class Connecting extends State {
                             .build())
                     .build());
         } catch (IOException e) {
-            e.printStackTrace();
+            listener.onEvent(new Error(e.getMessage()));
         }
-        return null;
+        return new Disconnected(this);
     }
 
     @Override
