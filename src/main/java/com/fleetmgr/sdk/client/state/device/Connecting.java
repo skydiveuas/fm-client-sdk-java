@@ -36,8 +36,9 @@ public class Connecting extends State {
                     .build());
         } catch (IOException e) {
             listener.onEvent(new Error(e.getMessage()));
+            return new Disconnected(this);
         }
-        return new Disconnected(this);
+        return null;
     }
 
     @Override

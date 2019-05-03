@@ -4,12 +4,12 @@ import com.fleetmgr.interfaces.*;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
+import com.fleetmgr.sdk.client.event.output.facade.Error;
 import com.fleetmgr.sdk.client.state.State;
 import com.fleetmgr.interfaces.facade.control.*;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by: Bartosz Nawrot
@@ -49,7 +49,8 @@ public class Connecting extends State {
                             .build())
                     .build());
         } catch (IOException e) {
-            e.printStackTrace();
+            listener.onEvent(new Error(e.getMessage()));
+            return new Disconnected(this);
         }
         return null;
     }

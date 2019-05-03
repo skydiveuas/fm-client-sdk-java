@@ -1,5 +1,6 @@
 package com.fleetmgr.sdk.client.backend;
 
+import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.interfaces.facade.control.*;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
@@ -49,13 +50,16 @@ public class HeartbeatHandler {
 
     public void handleHeartbeat(ControlMessage message) {
         lastReception.set(System.currentTimeMillis());
+        Location location = backend.getLocation();
+        HeartbeatResponse.Builder builder = HeartbeatResponse.newBuilder()
+                .setKey(message.getHeartbeat().getKey());
+        if (location != null) {
+            builder.setLocation(location);
+        }
         backend.send(ClientMessage.newBuilder()
                 .setCommand(Command.HEARTBEAT)
                 .setResponse(Response.ACCEPTED)
-                .setHeartbeat(HeartbeatResponse.newBuilder()
-                        .setKey(message.getHeartbeat().getKey())
-                        .setLocation(backend.getLocation())
-                        .build())
+                .setHeartbeat(builder.build())
                 .build());
     }
 

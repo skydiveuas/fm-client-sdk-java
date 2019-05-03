@@ -27,8 +27,8 @@ import java.util.logging.Level;
 public abstract class Client extends StateMachine<Event> {
 
     public interface Listener {
-        Location getLocation();
         void onEvent(FacadeEvent event);
+        Location getLocation();
         void log(Level level, String message);
     }
 
