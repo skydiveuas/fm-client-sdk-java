@@ -12,7 +12,7 @@ import java.util.logging.Level;
  */
 public abstract class Socket {
 
-    static final int BUFFER_SIZE = 2048;
+    static final int BUFFER_SIZE = 0xFFFF;
 
     public interface Listener {
         void onReceived(byte[] data, int size);
