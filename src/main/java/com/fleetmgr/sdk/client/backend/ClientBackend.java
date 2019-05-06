@@ -116,10 +116,12 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
                     .sslContext(sslContext)
                     .overrideAuthority("localhost")
                     .build();
+            trace(Level.INFO, "Started TLS gRPC channel");
         } else {
             channel = NettyChannelBuilder.forAddress(ip, unsafePort)
                     .negotiationType(NegotiationType.PLAINTEXT)
                     .build();
+            trace(Level.INFO, "Started Unsafe gRPC channel");
         }
 
         FacadeServiceGrpc.FacadeServiceStub stub = FacadeServiceGrpc.newStub(channel);
@@ -141,7 +143,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public void send(ClientMessage message) {
         ClientMessage verified = client.verifySending(message);
         if (verified != null) {
-            trace("Sending:\n" + message + "@ " + client.getStateName());
+            trace(Level.INFO, "Sending:\n" + message + "@ " + client.getStateName());
             toFacade.onNext(message);
         }
     }
@@ -162,8 +164,8 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         client.notifyEvent(new ConnectionEvent(ConnectionEvent.Type.CLOSED));
     }
 
-    public void trace(String message) {
-        client.log(Level.INFO, message);
+    public void trace(Level level, String message) {
+        client.log(level, message);
     }
 
     @SuppressWarnings("SameParameterValue")
