@@ -111,14 +111,16 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
                             null,
                             null);
 
-            channel = NettyChannelBuilder.forAddress(ip, tlsPort)
+            channel = NettyChannelBuilder
+                    .forAddress(ip, tlsPort)
                     .negotiationType(NegotiationType.TLS)
                     .sslContext(sslContext)
                     .overrideAuthority("localhost")
                     .build();
             trace(Level.INFO, "Started TLS gRPC channel");
         } else {
-            channel = NettyChannelBuilder.forAddress(ip, unsafePort)
+            channel = NettyChannelBuilder
+                    .forAddress(ip, unsafePort)
                     .negotiationType(NegotiationType.PLAINTEXT)
                     .build();
             trace(Level.INFO, "Started Unsafe gRPC channel");
