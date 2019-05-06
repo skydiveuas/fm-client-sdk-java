@@ -118,6 +118,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
                     .build();
         } else {
             channel = NettyChannelBuilder.forAddress(ip, unsafePort)
+                    .negotiationType(NegotiationType.PLAINTEXT)
                     .build();
         }
 
