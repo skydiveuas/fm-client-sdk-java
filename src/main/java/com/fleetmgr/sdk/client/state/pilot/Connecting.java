@@ -36,9 +36,7 @@ public class Connecting extends State {
                     OperateRequest.newBuilder()
                     .setRequestedDeviceId(deviceId)
                     .build());
-            backend.openFacadeConnection(
-                    operateResponse.getHost(),
-                    operateResponse.getPort());
+            backend.openFacadeConnection(operateResponse);
             send(ClientMessage.newBuilder()
                     .setCommand(Command.SETUP)
                     .setAttach(SetupRequest.newBuilder()

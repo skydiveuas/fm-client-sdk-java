@@ -1,6 +1,8 @@
 package com.fleetmgr.sdk.client.backend;
 
+import com.fleetmgr.interfaces.AttachResponse;
 import com.fleetmgr.interfaces.Location;
+import com.fleetmgr.interfaces.OperateResponse;
 import com.fleetmgr.interfaces.facade.control.ClientMessage;
 import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.interfaces.facade.control.FacadeServiceGrpc;
@@ -85,18 +87,39 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         return clientListener.getLocation();
     }
 
-    public void openFacadeConnection(String ip, int port) throws SSLException {
-        SslContext sslContext =
-                buildSslContext(
-                        configuration.getProperty("facadeCertPath", String.class),
-                        null,
-                        null);
+    public void openFacadeConnection(AttachResponse attachResponse) throws SSLException {
+        openFacadeConnection(
+                attachResponse.getHost(),
+                attachResponse.getUnsafePort(),
+                attachResponse.getTlsPort(),
+                configuration.getProperty("facade.useTls", Boolean.class));
+    }
 
-        channel = NettyChannelBuilder.forAddress(ip, port)
-                .negotiationType(NegotiationType.TLS)
-                .sslContext(sslContext)
-                .overrideAuthority("localhost")
-                .build();
+    public void openFacadeConnection(OperateResponse operateResponse) throws SSLException {
+        openFacadeConnection(
+                operateResponse.getHost(),
+                operateResponse.getUnsafePort(),
+                operateResponse.getTlsPort(),
+                configuration.getProperty("facade.useTls", Boolean.class));
+    }
+
+    private void openFacadeConnection(String ip, int unsafePort, int tlsPort, boolean useTls) throws SSLException {
+        if (useTls) {
+            SslContext sslContext =
+                    buildSslContext(
+                            configuration.getProperty("facadeCertPath", String.class),
+                            null,
+                            null);
+
+            channel = NettyChannelBuilder.forAddress(ip, tlsPort)
+                    .negotiationType(NegotiationType.TLS)
+                    .sslContext(sslContext)
+                    .overrideAuthority("localhost")
+                    .build();
+        } else {
+            channel = NettyChannelBuilder.forAddress(ip, unsafePort)
+                    .build();
+        }
 
         FacadeServiceGrpc.FacadeServiceStub stub = FacadeServiceGrpc.newStub(channel);
         toFacade = stub.control(this);
