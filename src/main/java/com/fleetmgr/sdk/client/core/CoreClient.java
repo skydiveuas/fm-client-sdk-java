@@ -24,13 +24,13 @@ import static com.google.api.HttpRule.PatternCase.POST;
 public class CoreClient {
 
     public interface Listener {
-        void trace(Level level, String message);
+        void log(Level level, String message);
     }
 
     private final HttpsClient client;
 
     public CoreClient(ConfigurationProvider configuration, Listener listener) {
-        this.client = new HttpsClient(configuration, listener::trace);
+        this.client = new HttpsClient(configuration, listener::log);
     }
 
     public AttachResponse attach() throws IOException {

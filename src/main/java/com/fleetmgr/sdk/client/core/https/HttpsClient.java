@@ -26,7 +26,7 @@ import static com.google.api.HttpRule.PatternCase.GET;
 public class HttpsClient {
 
     public interface Listener {
-        void trace(Level level, String message);
+        void log(Level level, String message);
     }
 
     private final String address;
@@ -47,7 +47,7 @@ public class HttpsClient {
 
     public String execute(String path, HttpRule.PatternCase method, String body) throws IOException {
         URL url = new URL(address + path);
-        listener.trace(Level.INFO, "Execute " + method.name() + ": " + url.toString() + " body: " + body);
+        listener.log(Level.INFO, "Execute " + method.name() + ": " + url.toString() + " body: " + body);
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         con.setDoOutput(true);
         con.setDoInput(true);
@@ -69,7 +69,7 @@ public class HttpsClient {
         int result = con.getResponseCode();
         if (result >= HttpURLConnection.HTTP_OK && result < HttpURLConnection.HTTP_MULT_CHOICE) {
             String response = readResponse(con.getInputStream());
-            listener.trace(Level.INFO, "Response " + result + ": " + response);
+            listener.log(Level.INFO, "Response " + result + ": " + response);
             return response;
 
         } else {

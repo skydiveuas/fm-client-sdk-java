@@ -107,7 +107,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         if (useTls) {
             SslContext sslContext =
                     buildSslContext(
-                            configuration.getProperty("facadeCertPath", String.class),
+                            configuration.getProperty("facade.certPath", String.class),
                             null,
                             null);
 
@@ -117,13 +117,13 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
                     .sslContext(sslContext)
                     .overrideAuthority("localhost")
                     .build();
-            trace(Level.INFO, "Started TLS gRPC channel");
+            log(Level.INFO, "Started TLS gRPC channel");
         } else {
             channel = NettyChannelBuilder
                     .forAddress(ip, unsafePort)
                     .negotiationType(NegotiationType.PLAINTEXT)
                     .build();
-            trace(Level.INFO, "Started Unsafe gRPC channel");
+            log(Level.INFO, "Started Unsafe gRPC channel");
         }
 
         FacadeServiceGrpc.FacadeServiceStub stub = FacadeServiceGrpc.newStub(channel);
@@ -145,7 +145,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public void send(ClientMessage message) {
         ClientMessage verified = client.verifySending(message);
         if (verified != null) {
-            trace(Level.INFO, "Sending:\n" + message + "@ " + client.getStateName());
+            log(Level.INFO, "Sending:\n" + message + "@ " + client.getStateName());
             toFacade.onNext(message);
         }
     }
@@ -166,7 +166,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         client.notifyEvent(new ConnectionEvent(ConnectionEvent.Type.CLOSED));
     }
 
-    public void trace(Level level, String message) {
+    public void log(Level level, String message) {
         client.log(level, message);
     }
 
