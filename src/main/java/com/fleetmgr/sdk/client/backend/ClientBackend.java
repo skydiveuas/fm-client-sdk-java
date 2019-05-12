@@ -4,6 +4,7 @@ import com.fleetmgr.interfaces.AttachResponse;
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.interfaces.OperateResponse;
 import com.fleetmgr.interfaces.facade.control.ClientMessage;
+import com.fleetmgr.interfaces.facade.control.Command;
 import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.interfaces.facade.control.FacadeServiceGrpc;
 import com.fleetmgr.sdk.client.Client;
@@ -145,7 +146,12 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public void send(ClientMessage message) {
         ClientMessage verified = client.verifySending(message);
         if (verified != null) {
-            log(Level.INFO, "Sending:\n" + message + "@ " + client.getStateName());
+            Level level = Level.INFO;
+            if (message.getCommand() == Command.HEARTBEAT) {
+                // for heartbeats set lower trace level, there will be a lot of these messages
+                level = Level.FINE;
+            }
+            log(level, "Sending:\n" + message + "@ " + client.getStateName());
             toFacade.onNext(message);
         }
     }
