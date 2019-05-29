@@ -39,7 +39,7 @@ public class Connecting extends State {
             backend.openFacadeConnection(operateResponse);
             send(ClientMessage.newBuilder()
                     .setCommand(Command.SETUP)
-                    .setAttach(SetupRequest.newBuilder()
+                    .setSetupRequest(SetupRequest.newBuilder()
                             .setKey(operateResponse.getKey())
                             .build())
                     .setChannelsRequest(ChannelRequestList.newBuilder()
@@ -73,6 +73,7 @@ public class Connecting extends State {
         switch (message.getCommand()) {
             case SETUP:
                 if (message.getResponse() == Response.ACCEPTED) {
+                    backend.setSetupResponse(message.getSetupResponse());
                     return new Connected(this,
                             message.getChannelsResponse().getChannelsList());
 

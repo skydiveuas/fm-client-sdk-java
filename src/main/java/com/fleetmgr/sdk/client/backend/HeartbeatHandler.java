@@ -35,8 +35,7 @@ public class HeartbeatHandler {
 
         lastReception.set(System.currentTimeMillis());
 
-        long supervisionInterval =
-                backend.getConfiguration().getProperty("supervision.intervalMs", Long.class);
+        long supervisionInterval = backend.getSetupResponse().getSupervisionIntervalMs();
         timer = client.executeEvery(this::onTimeout, supervisionInterval, supervisionInterval);
     }
 
@@ -64,8 +63,7 @@ public class HeartbeatHandler {
     }
 
     private void onTimeout() {
-        long supervisionTimeout =
-                backend.getConfiguration().getProperty("supervision.timeoutMs", Long.class);
+        long supervisionTimeout = backend.getSetupResponse().getUnreachableTimeoutMs();
         long silentTime = System.currentTimeMillis() - lastReception.get();
         if (silentTime > supervisionTimeout) {
             client.notifyEvent(new ConnectionEvent(ConnectionEvent.Type.LOST));

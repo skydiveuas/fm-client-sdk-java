@@ -3,10 +3,7 @@ package com.fleetmgr.sdk.client.backend;
 import com.fleetmgr.interfaces.AttachResponse;
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.interfaces.OperateResponse;
-import com.fleetmgr.interfaces.facade.control.ClientMessage;
-import com.fleetmgr.interfaces.facade.control.Command;
-import com.fleetmgr.interfaces.facade.control.ControlMessage;
-import com.fleetmgr.interfaces.facade.control.FacadeServiceGrpc;
+import com.fleetmgr.interfaces.facade.control.*;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
@@ -40,6 +37,8 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     private Client.Listener clientListener;
 
     private CoreClient core;
+
+    private SetupResponse setupResponse;
 
     private HeartbeatHandler heartbeatHandler;
     private ChannelsHandler channelsHandler;
@@ -86,6 +85,14 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
 
     Location getLocation() {
         return clientListener.getLocation();
+    }
+
+    public void setSetupResponse(SetupResponse setupResponse) {
+        this.setupResponse = setupResponse;
+    }
+
+    SetupResponse getSetupResponse() {
+        return setupResponse;
     }
 
     public void openFacadeConnection(AttachResponse attachResponse) throws SSLException {

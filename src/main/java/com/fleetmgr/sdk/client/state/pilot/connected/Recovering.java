@@ -21,7 +21,7 @@ public class Recovering extends State {
     @Override
     public State start() {
         backend.getHeartbeatHandler().end();
-        listener.onEvent(new FacadeEvent(FacadeEvent.Type.CONNECTION_LOST));
+        listener.onEvent(new FacadeEvent(FacadeEvent.Type.UNREACHABLE));
         backend.getChannelsHandler().closeAllChannels();
         return null;
     }

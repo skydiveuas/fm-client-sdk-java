@@ -28,7 +28,7 @@ public class Connecting extends State {
             backend.openFacadeConnection(attachResponse);
             send(ClientMessage.newBuilder()
                     .setCommand(Command.SETUP)
-                    .setAttach(SetupRequest.newBuilder()
+                    .setSetupRequest(SetupRequest.newBuilder()
                             .setKey(attachResponse.getKey())
                             .build())
                     .build());
@@ -59,6 +59,7 @@ public class Connecting extends State {
         switch (message.getCommand()) {
             case SETUP:
                 if (message.getResponse() == Response.ACCEPTED) {
+                    backend.setSetupResponse(message.getSetupResponse());
                     return new Connected(this);
 
                 } else {
