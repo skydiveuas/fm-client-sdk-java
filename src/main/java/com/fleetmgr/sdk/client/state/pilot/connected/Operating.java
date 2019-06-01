@@ -62,7 +62,7 @@ public class Operating extends State {
             case RECEIVED:
                 return handleMessage(((Received) event).getMessage());
 
-            case LOST:
+            case UNREACHABLE:
                 return new Recovering(this);
 
             default:

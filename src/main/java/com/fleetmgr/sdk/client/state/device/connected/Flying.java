@@ -2,13 +2,11 @@ package com.fleetmgr.sdk.client.state.device.connected;
 
 import com.fleetmgr.interfaces.ChannelIndicationList;
 import com.fleetmgr.interfaces.ChannelResponse;
-import com.fleetmgr.interfaces.ChannelResponseList;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
 import com.fleetmgr.sdk.client.event.output.facade.ChannelsClosing;
 import com.fleetmgr.sdk.client.traffic.Channel;
-import com.fleetmgr.sdk.client.traffic.ChannelImpl;
 import com.fleetmgr.sdk.client.event.output.facade.ChannelsOpened;
 import com.fleetmgr.sdk.client.event.output.facade.FacadeEvent;
 import com.fleetmgr.sdk.client.state.State;
@@ -18,7 +16,6 @@ import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.interfaces.facade.control.Response;
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +53,7 @@ public class Flying extends State {
             case RECEIVED:
                 return handleMessage(((Received)event).getMessage());
 
-            case LOST:
+            case UNREACHABLE:
                 return new Recovering(this);
 
             default:

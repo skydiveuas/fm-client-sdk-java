@@ -12,22 +12,22 @@ import com.fleetmgr.sdk.client.state.State;
  */
 public class Disconnecting extends State {
 
-    private boolean wasRecovering;
+    private boolean dropped;
 
     Disconnecting(State state) {
         super(state);
-        this.wasRecovering = false;
+        this.dropped = false;
     }
 
-    Disconnecting(State state, boolean wasRecovering) {
+    Disconnecting(State state, boolean dropped) {
         super(state);
-        this.wasRecovering = wasRecovering;
+        this.dropped = dropped;
     }
 
     @Override
     public State start() {
         backend.getHeartbeatHandler().end();
-        if (wasRecovering) {
+        if (dropped) {
             return handleRelease();
 
         } else {

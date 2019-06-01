@@ -13,7 +13,8 @@ public class ConnectionEvent implements Event {
         CLOSED,
         ERROR,
         RECEIVED,
-        LOST,
+        UNREACHABLE,
+        CONNECTION_DROPPED
     }
 
     private Type type;
