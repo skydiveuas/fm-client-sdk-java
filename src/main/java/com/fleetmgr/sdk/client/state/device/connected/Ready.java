@@ -4,7 +4,6 @@ import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
-import com.fleetmgr.sdk.client.event.output.facade.FacadeEvent;
 import com.fleetmgr.sdk.client.state.State;
 
 /**
@@ -41,7 +40,6 @@ public class Ready extends State {
                 return handleMessage(((Received)event).getMessage());
 
             case UNREACHABLE:
-                listener.onEvent(new FacadeEvent(FacadeEvent.Type.CONNECTION_DROPPED));
                 return new Released(this);
 
             default:

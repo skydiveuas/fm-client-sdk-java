@@ -91,7 +91,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         this.setupResponse = setupResponse;
     }
 
-    SetupResponse getSetupResponse() {
+    public SetupResponse getSetupResponse() {
         return setupResponse;
     }
 
@@ -145,8 +145,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public void closeFacadeChannel() {
         try {
             channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException ignored) {
         }
     }
 

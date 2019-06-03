@@ -23,7 +23,6 @@ public class FacadeEvent {
         CHANNELS_CLOSING,
         OPERATION_ENDED,
         UNREACHABLE,
-        CONNECTION_DROPPED,
         CONNECTION_RECOVERED,
     }
 

@@ -63,9 +63,9 @@ public class HeartbeatHandler {
     }
 
     private void onTimeout() {
-        long supervisionTimeout = backend.getSetupResponse().getUnreachableTimeoutMs();
+        long unreachableTimeoutMs = backend.getSetupResponse().getUnreachableTimeoutMs();
         long silentTime = System.currentTimeMillis() - lastReception.get();
-        if (silentTime > supervisionTimeout) {
+        if (silentTime > unreachableTimeoutMs) {
             client.notifyEvent(new ConnectionEvent(ConnectionEvent.Type.UNREACHABLE));
         }
     }

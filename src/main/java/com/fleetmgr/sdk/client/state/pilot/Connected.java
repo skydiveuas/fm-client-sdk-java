@@ -1,16 +1,16 @@
 package com.fleetmgr.sdk.client.state.pilot;
 
-import java.util.logging.Level;
 import com.fleetmgr.interfaces.ChannelResponse;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
 import com.fleetmgr.sdk.client.event.output.facade.FacadeEvent;
+import com.fleetmgr.sdk.client.state.State;
 import com.fleetmgr.sdk.client.state.pilot.connected.Recovering;
 import com.fleetmgr.sdk.client.state.pilot.connected.Released;
 import com.fleetmgr.sdk.client.state.pilot.connected.ValidatingChannels;
-import com.fleetmgr.sdk.client.state.State;
 
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -45,14 +45,14 @@ public class Connected extends State {
     }
 
     private State onNewState(State newState) {
-        boolean wasRecovering = internalState instanceof Recovering;
+        boolean dropped = internalState instanceof Recovering;
         while (newState != null) {
             log(Level.INFO, "Connected transition: " + toString() + " -> Connected." + newState.toString());
             internalState = newState;
             newState = (State)internalState.start();
         }
         if (internalState instanceof Released) {
-            return new Disconnecting(this, wasRecovering);
+            return new Disconnecting(this, dropped);
         }
         return null;
     }
