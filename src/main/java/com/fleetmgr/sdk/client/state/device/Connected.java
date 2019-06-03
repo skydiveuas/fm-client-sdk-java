@@ -43,7 +43,7 @@ public class Connected extends State {
     }
 
     private State onNewState(State newState) {
-        boolean dropped = internalState instanceof Recovering;
+        boolean dropped = internalState instanceof Recovering || internalState instanceof Ready;
         while (newState != null) {
             log(Level.INFO, "Connected transition: " + toString() + " -> Connected." + newState.toString());
             internalState = newState;
