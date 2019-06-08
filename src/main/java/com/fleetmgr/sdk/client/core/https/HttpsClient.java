@@ -1,7 +1,6 @@
 package com.fleetmgr.sdk.client.core.https;
 
 import com.google.api.HttpRule;
-import org.cfg4j.provider.ConfigurationProvider;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -33,11 +32,13 @@ public class HttpsClient {
     private final String apiKey;
     private final Listener listener;
 
-    public HttpsClient(ConfigurationProvider configuration, Listener listener) {
-        String coreHost = configuration.getProperty("core.host", String.class);
-        String corePort = configuration.getProperty("core.port", String.class);
-        this.address = "https://" + coreHost + ":" + corePort;
-        this.apiKey = configuration.getProperty("apiKey", String.class);
+    public HttpsClient(String host, int port, String apiKey, Listener listener) {
+        this("https://" + host + ":" + port, apiKey, listener);
+    }
+
+    public HttpsClient(String address, String apiKey, Listener listener) {
+        this.address = address;
+        this.apiKey = apiKey;
         this.listener = listener;
     }
 

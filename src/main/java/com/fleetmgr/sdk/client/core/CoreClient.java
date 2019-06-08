@@ -30,7 +30,10 @@ public class CoreClient {
     private final HttpsClient client;
 
     public CoreClient(ConfigurationProvider configuration, Listener listener) {
-        this.client = new HttpsClient(configuration, listener::log);
+        String host = configuration.getProperty("core.host", String.class);
+        int port = configuration.getProperty("core.port", Integer.class);
+        String apiKry = configuration.getProperty("apiKey", String.class);
+        this.client = new HttpsClient(host, port, apiKry, listener::log);
     }
 
     public AttachResponse attach() throws IOException {
