@@ -36,6 +36,7 @@ public class Recovering extends State {
     public State notifyEvent(UserEvent event) {
         switch (event.getType()) {
             case RELEASE:
+                recoveringTimer.cancel();
                 return new Released(this);
 
             default:
