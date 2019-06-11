@@ -6,7 +6,6 @@ import com.fleetmgr.interfaces.OperateResponse;
 import com.fleetmgr.interfaces.facade.control.*;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.core.CoreClient;
-import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
@@ -169,13 +168,12 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
 
     @Override
     public void onError(Throwable t) {
-        t.printStackTrace();
-        client.notifyEvent(new ConnectionEvent(ConnectionEvent.Type.ERROR));
+        log(Level.WARNING, "Facade connection failure: " + t.getMessage());
     }
 
     @Override
     public void onCompleted() {
-        client.notifyEvent(new ConnectionEvent(ConnectionEvent.Type.CLOSED));
+        log(Level.INFO, "Facade connection closed");
     }
 
     public void log(Level level, String message) {

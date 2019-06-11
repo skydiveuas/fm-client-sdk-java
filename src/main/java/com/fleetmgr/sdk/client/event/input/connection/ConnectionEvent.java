@@ -10,8 +10,6 @@ import com.fleetmgr.sdk.client.event.input.Event;
 public class ConnectionEvent implements Event {
 
     public enum Type {
-        CLOSED,
-        ERROR,
         RECEIVED,
         UNREACHABLE,
         CONNECTION_DROPPED

@@ -5,7 +5,6 @@ import com.fleetmgr.sdk.client.event.input.user.UserEvent;
 import com.fleetmgr.sdk.client.event.output.facade.FacadeEvent;
 import com.fleetmgr.sdk.client.state.State;
 import com.fleetmgr.sdk.client.state.device.connected.Ready;
-import com.fleetmgr.sdk.client.state.device.connected.Recovering;
 import com.fleetmgr.sdk.client.state.device.connected.Released;
 
 import java.util.logging.Level;
@@ -43,14 +42,13 @@ public class Connected extends State {
     }
 
     private State onNewState(State newState) {
-        boolean dropped = internalState instanceof Recovering || internalState instanceof Ready;
         while (newState != null) {
             log(Level.INFO, "Connected transition: " + toString() + " -> Connected." + newState.toString());
             internalState = newState;
             newState = (State)internalState.start();
         }
         if (internalState instanceof Released) {
-            return new Disconnecting(this, dropped);
+            return new Disconnecting(this);
         }
         return null;
     }
