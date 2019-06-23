@@ -19,14 +19,14 @@ public class TcpSocket extends Socket {
     private ExecutorService executor;
     private java.net.Socket socket;
 
-    private AtomicBoolean closed;
+    private AtomicBoolean keepReception;
 
     private DataOutputStream outputStream;
     private DataInputStream inputStream;
 
     public TcpSocket(ExecutorService executor) {
         this.executor = executor;
-        this.closed = new AtomicBoolean(true);
+        this.keepReception = new AtomicBoolean(false);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TcpSocket extends Socket {
         socket = connectImpl(ip, port);
         outputStream = new DataOutputStream(socket.getOutputStream());
         inputStream = new DataInputStream(socket.getInputStream());
-        closed.set(false);
+        keepReception.set(true);
     }
 
     protected java.net.Socket connectImpl(String ip, int port) throws Exception {
@@ -61,9 +61,11 @@ public class TcpSocket extends Socket {
     @Override
     public void disconnect() {
         try {
-            closed.set(true);
-            outputStream.close();
-            inputStream.close();
+            if (keepReception.get()) {
+                keepReception.set(false);
+                outputStream.close();
+                inputStream.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,7 +80,7 @@ public class TcpSocket extends Socket {
 
     private void receptionThread() {
         byte[] buffer = new byte[BUFFER_SIZE];
-        while (!closed.get()) {
+        while (keepReception.get()) {
             try {
                 int r = inputStream.read(buffer, 0, 1);
                 if (r > 0) {
@@ -93,7 +95,7 @@ public class TcpSocket extends Socket {
                 }
 
             } catch (IOException e) {
-                if (!closed.get()) {
+                if (!keepReception.get()) {
                     e.printStackTrace();
                 }
                 break;
