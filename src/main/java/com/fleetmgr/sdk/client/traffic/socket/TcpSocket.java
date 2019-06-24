@@ -95,7 +95,7 @@ public class TcpSocket extends Socket {
                 }
 
             } catch (IOException e) {
-                if (!keepReception.get()) {
+                if (keepReception.get()) {
                     e.printStackTrace();
                 }
                 break;
