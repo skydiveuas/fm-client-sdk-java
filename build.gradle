@@ -19,8 +19,8 @@ repositories {
     mavenCentral()
 }
 
-def grpcVersion = '1.18.0'
-def protobufVersion = '3.6.1'
+def grpcVersion = '1.21.0'
+def protobufVersion = '3.8.0'
 
 dependencies {
     compile "io.grpc:grpc-netty-shaded:${grpcVersion}"
