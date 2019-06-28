@@ -28,10 +28,11 @@ dependencies {
     compile "io.grpc:grpc-stub:${grpcVersion}"
     compile "com.google.protobuf:protobuf-java-util:${protobufVersion}"
 
-    compile 'org.json:json:20180813'
-
+    compile 'org.slf4j:slf4j-api:1.7.2'
     compile 'org.cfg4j:cfg4j-core:4.4.0'
 
+    compile 'org.json:json:20180813'
+    
     compile 'org.projectlombok:lombok:1.18.4'
 
     testCompile 'junit:junit:4.12'

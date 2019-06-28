@@ -12,6 +12,8 @@ import org.cfg4j.provider.ConfigurationProviderBuilder;
 import org.cfg4j.source.ConfigurationSource;
 import org.cfg4j.source.context.filesprovider.ConfigFilesProvider;
 import org.cfg4j.source.files.FilesConfigurationSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -49,7 +51,13 @@ public abstract class Client extends StateMachine<Event> {
         this.backend = new ClientBackend(executor, configuration,this, listener, coreClient);
     }
 
+    private final Logger logger = LoggerFactory.getLogger("Client");
+
     @Override
+    protected Logger getLogger() {
+        return logger;
+    }
+
     public void log(Level level, String message) {
         listener.log(level, message);
     }

@@ -1,7 +1,7 @@
 package com.fleetmgr.sdk.system.machine;
 
 import com.fleetmgr.sdk.system.capsule.Capsule;
-import java.util.logging.Level;
+import org.slf4j.Logger;
 
 import java.util.Deque;
 import java.util.concurrent.ExecutorService;
@@ -26,10 +26,10 @@ public abstract class StateMachine<Event> extends Capsule {
 
     public void notifyEvent(Event event) {
         execute(() -> {
-            log(Level.INFO,"Handling: " + event + " @ " + state);
+            getLogger().info(state + ": Handling: " + event);
             State<Event> newState = state.handleEvent(event);
             while (newState != null) {
-                log(Level.INFO,"Transition: " + state + " -> " + newState);
+                getLogger().info(state + ": Transition to: " + newState);
                 state = newState;
                 newState = state.start();
             }
@@ -42,14 +42,14 @@ public abstract class StateMachine<Event> extends Capsule {
     }
 
     public void defer(Event event) {
-        log(Level.FINE,"Deferring: " + event +  " @ " + state);
+        getLogger().debug(state + ": Deferring: " + event );
         deferred.add(event);
     }
 
     public void recall() {
         if (!deferred.isEmpty()) {
             Event event = deferred.poll();
-            log(Level.FINE, "Recalling: " + event +  " @ " + state + ", remaining queue: " + deferred);
+            getLogger().debug(state + ": Recalling: " + event +  ", remaining queue: " + deferred);
             notifyEvent(event);
         }
     }
@@ -58,5 +58,5 @@ public abstract class StateMachine<Event> extends Capsule {
         return state.toString();
     }
 
-    protected abstract void log(Level level, String message);
+    protected abstract Logger getLogger();
 }
