@@ -155,7 +155,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public void send(ClientMessage message) {
         ClientMessage verified = client.verifySending(message);
         if (verified != null) {
-            logger.info(": {}: Sending:\n{}", client.getStateName(), message);
+            logger.info("{}: Sending:\n{}", client.getStateName(), message);
             toFacade.onNext(message);
         }
     }
