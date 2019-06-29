@@ -3,7 +3,6 @@ package com.fleetmgr.sdk.client;
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.interfaces.facade.control.ClientMessage;
 import com.fleetmgr.sdk.client.backend.ClientBackend;
-import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.Event;
 import com.fleetmgr.sdk.client.event.output.facade.FacadeEvent;
 import com.fleetmgr.sdk.system.machine.StateMachine;
@@ -19,7 +18,6 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -31,35 +29,24 @@ public abstract class Client extends StateMachine<Event> {
     public interface Listener {
         void onEvent(FacadeEvent event);
         Location getLocation();
-        void log(Level level, String message);
     }
 
-    private Listener listener;
+    private final Logger logger;
 
+    private final String name;
     protected ClientBackend backend;
 
-    Client(ExecutorService executor, String configPath, Listener listener) {
-        this(executor, loadConfigurationProvider(configPath), listener);
+    Client(ExecutorService executor, String configPath,
+           Listener listener, String name) {
+        this(executor, loadConfigurationProvider(configPath), listener, name);
     }
 
-    Client(ExecutorService executor, ConfigurationProvider configuration, Listener listener) {
+    Client(ExecutorService executor, ConfigurationProvider configuration,
+           Listener listener, String name) {
         super(executor, null);
-        this.listener = listener;
-
-        CoreClient coreClient = new CoreClient(configuration, this::log);
-
-        this.backend = new ClientBackend(executor, configuration,this, listener, coreClient);
-    }
-
-    private final Logger logger = LoggerFactory.getLogger("Client");
-
-    @Override
-    protected Logger getLogger() {
-        return logger;
-    }
-
-    public void log(Level level, String message) {
-        listener.log(level, message);
+        this.logger = LoggerFactory.getLogger(name);
+        this.name = name;
+        this.backend = new ClientBackend(executor, configuration,this, listener);
     }
 
     public ClientMessage verifySending(ClientMessage message) {
@@ -73,5 +60,19 @@ public abstract class Client extends StateMachine<Event> {
         return new ConfigurationProviderBuilder()
                 .withConfigurationSource(source)
                 .build();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Logger getLogger() {
+        return logger;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

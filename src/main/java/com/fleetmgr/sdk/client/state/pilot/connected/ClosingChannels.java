@@ -87,7 +87,7 @@ public class ClosingChannels extends State {
                 return new Released(this);
 
             case HEARTBEAT:
-                log(Level.INFO, "Heartbeat ignored");
+                logger.info("Heartbeat ignored");
                 return null;
 
             default:

@@ -57,7 +57,7 @@ public class Releasing extends State {
                 }
 
             case HEARTBEAT:
-                log(Level.INFO, "Heartbeat ignored during release procedure");
+                logger.info("Heartbeat ignored during release procedure");
                 return null;
 
             default:

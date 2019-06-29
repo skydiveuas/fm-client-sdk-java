@@ -26,10 +26,10 @@ public abstract class StateMachine<Event> extends Capsule {
 
     public void notifyEvent(Event event) {
         execute(() -> {
-            getLogger().info(state + ": Handling: " + event);
+            getLogger().info("{}: Handling: {}", state, event);
             State<Event> newState = state.handleEvent(event);
             while (newState != null) {
-                getLogger().info(state + ": Transition to: " + newState);
+                getLogger().info("{}: Transition to: {}", state, newState);
                 state = newState;
                 newState = state.start();
             }

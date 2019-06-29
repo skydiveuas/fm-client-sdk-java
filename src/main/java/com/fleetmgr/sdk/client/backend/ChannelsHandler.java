@@ -8,10 +8,10 @@ import com.fleetmgr.sdk.client.traffic.socket.Socket;
 import com.fleetmgr.sdk.client.traffic.socket.TcpSocket;
 import com.fleetmgr.sdk.client.traffic.socket.TlsTcpSocket;
 import com.fleetmgr.sdk.client.traffic.socket.UdpSocket;
+import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -20,13 +20,15 @@ import java.util.logging.Level;
  */
 public class ChannelsHandler {
 
-    private Client client;
+    private final Logger logger;
+    private final Client client;
 
     private ExecutorService executor;
 
     private HashMap<Long, ChannelImpl> channels;
 
     ChannelsHandler(Client client, ExecutorService executor) {
+        this.logger = client.getLogger();
         this.client = client;
         this.executor = executor;
 
@@ -53,7 +55,7 @@ public class ChannelsHandler {
         Map<Long, Channel> opened = new HashMap<>();
         for (ChannelResponse c : toValidate) {
             try {
-                log(Level.INFO, "Opening channel, id: " + c.getId());
+                logger.info("Opening channel, id: {}", c.getId());
 
                 Socket socket = buildSocket(c);
                 ChannelImpl channel = new ChannelImpl(c.getId(), socket);
@@ -62,7 +64,7 @@ public class ChannelsHandler {
                 channels.put(c.getId(), channel);
                 opened.put(c.getId(), channel);
 
-                log(Level.INFO, "Channel id: " + c.getId() + " validated");
+                logger.info("Channel id: {} validated", c.getId());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -78,7 +80,7 @@ public class ChannelsHandler {
                         return new UdpSocket(executor);
 
                     case TLS:
-                        log(Level.SEVERE, "UDP Encryption not supported");
+                        logger.error("UDP Encryption not supported");
                         return null;
                 }
                 break;
@@ -93,26 +95,26 @@ public class ChannelsHandler {
                 }
                 break;
         }
-        log(Level.SEVERE, "Unexpected channel type: " +
-                parameters.getProtocol() + ":" + parameters.getSecurity());
+        logger.error("Unexpected channel type: {}:{}",
+                parameters.getProtocol(), parameters.getSecurity());
         return null;
     }
 
     public void closeChannels(Collection<Long> channels) {
         for (Long c : channels) {
-            log(Level.INFO, "Closing channel, id: " + c);
+            logger.info("Closing channel, id: {}", c);
             ChannelImpl s = this.channels.remove(c);
             if (s != null) {
                 s.close();
             } else {
-                log(Level.WARNING, "Warning, trying to close not existing channel, id: " + c);
+                logger.warn("Trying to close not existing channel, id: {}", c);
             }
         }
     }
 
     public void closeAllChannels() {
         for (ChannelImpl c : channels.values()) {
-            log(Level.INFO, "Closing channel id: " + c.getId());
+            logger.info("Closing channel id: {}", c.getId());
             c.close();
         }
         channels.clear();
@@ -120,16 +122,12 @@ public class ChannelsHandler {
 
     public void setOwned(Collection<Long> owned) {
         for (Long id : owned) {
-            log(Level.INFO, "Setting channel id: " + id + " as owned");
+            logger.info("Setting channel id: {} as owned", id);
             channels.get(id).setOwned(true);
         }
     }
 
     public void setOwned(long channelId, boolean owned) {
         channels.get(channelId).setOwned(owned);
-    }
-
-    public void log(Level level, String message) {
-        client.log(level, message);
     }
 }

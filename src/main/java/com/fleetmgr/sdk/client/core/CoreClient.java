@@ -9,9 +9,9 @@ import com.google.protobuf.util.JsonFormat;
 import org.cfg4j.provider.ConfigurationProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 import static com.google.api.HttpRule.PatternCase.GET;
 import static com.google.api.HttpRule.PatternCase.POST;
@@ -23,17 +23,13 @@ import static com.google.api.HttpRule.PatternCase.POST;
  */
 public class CoreClient {
 
-    public interface Listener {
-        void log(Level level, String message);
-    }
-
     private final HttpsClient client;
 
-    public CoreClient(ConfigurationProvider configuration, Listener listener) {
+    public CoreClient(ConfigurationProvider configuration, Logger logger) {
         String host = configuration.getProperty("core.host", String.class);
         int port = configuration.getProperty("core.port", Integer.class);
-        String apiKry = configuration.getProperty("apiKey", String.class);
-        this.client = new HttpsClient(host, port, apiKry, listener::log);
+        String apiKey = configuration.getProperty("apiKey", String.class);
+        this.client = new HttpsClient(host, port, apiKey, logger);
     }
 
     public AttachResponse attach() throws IOException {

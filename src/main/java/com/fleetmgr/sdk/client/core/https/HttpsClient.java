@@ -1,6 +1,7 @@
 package com.fleetmgr.sdk.client.core.https;
 
 import com.google.api.HttpRule;
+import org.slf4j.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -13,7 +14,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.logging.Level;
 
 import static com.google.api.HttpRule.PatternCase.GET;
 
@@ -24,22 +24,19 @@ import static com.google.api.HttpRule.PatternCase.GET;
  */
 public class HttpsClient {
 
-    public interface Listener {
-        void log(Level level, String message);
-    }
+    private final Logger logger;
 
     private final String address;
     private final String apiKey;
-    private final Listener listener;
 
-    public HttpsClient(String host, int port, String apiKey, Listener listener) {
-        this("https://" + host + ":" + port, apiKey, listener);
+    public HttpsClient(String host, int port, String apiKey, Logger logger) {
+        this("https://" + host + ":" + port, apiKey, logger);
     }
 
-    public HttpsClient(String address, String apiKey, Listener listener) {
+    public HttpsClient(String address, String apiKey, Logger logger) {
         this.address = address;
         this.apiKey = apiKey;
-        this.listener = listener;
+        this.logger = logger;
     }
 
     public String execute(String path, HttpRule.PatternCase method) throws IOException {
@@ -48,7 +45,7 @@ public class HttpsClient {
 
     public String execute(String path, HttpRule.PatternCase method, String body) throws IOException {
         URL url = new URL(address + path);
-        listener.log(Level.INFO, "Execute " + method.name() + ": " + url.toString() + " body: " + body);
+        logger.info("Execute {}: {} body: {}", method.name(), url.toString(), body);
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         con.setDoOutput(true);
         con.setDoInput(true);
@@ -70,7 +67,7 @@ public class HttpsClient {
         int result = con.getResponseCode();
         if (result >= HttpURLConnection.HTTP_OK && result < HttpURLConnection.HTTP_MULT_CHOICE) {
             String response = readResponse(con.getInputStream());
-            listener.log(Level.INFO, "Response " + result + ": " + response);
+            logger.info("Response {}: {}", result, response);
             return response;
 
         } else {

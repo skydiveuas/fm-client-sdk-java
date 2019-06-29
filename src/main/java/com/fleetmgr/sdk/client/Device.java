@@ -12,12 +12,14 @@ import java.util.concurrent.ExecutorService;
  */
 public class Device extends Client {
 
-    public Device(ExecutorService executor, String configPath, Listener listener) {
-        this(executor, loadConfigurationProvider(configPath), listener);
+    public Device(ExecutorService executor, String configPath,
+                  Listener listener, String name) {
+        this(executor, loadConfigurationProvider(configPath), listener, name);
     }
 
-    public Device(ExecutorService executor, ConfigurationProvider configuration, Listener listener) {
-        super(executor, configuration, listener);
+    public Device(ExecutorService executor, ConfigurationProvider configuration,
+                  Listener listener, String name) {
+        super(executor, configuration, listener, name);
         setState(new Disconnected(this, backend, listener));
     }
 }

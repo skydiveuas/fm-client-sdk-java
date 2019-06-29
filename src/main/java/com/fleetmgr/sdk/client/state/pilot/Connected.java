@@ -47,7 +47,7 @@ public class Connected extends State {
     private State onNewState(State newState) {
         boolean dropped = internalState instanceof Recovering;
         while (newState != null) {
-            log(Level.INFO, "Connected transition: " + toString() + " -> Connected." + newState.toString());
+            logger.info("Connected transition: " + toString() + " -> Connected." + newState.toString());
             internalState = newState;
             newState = (State)internalState.start();
         }

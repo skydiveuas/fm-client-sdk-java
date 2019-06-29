@@ -43,7 +43,7 @@ public class Connected extends State {
 
     private State onNewState(State newState) {
         while (newState != null) {
-            log(Level.INFO, "Connected transition: " + toString() + " -> Connected." + newState.toString());
+            logger.info("Connected transition: " + toString() + " -> Connected." + newState.toString());
             internalState = newState;
             newState = (State)internalState.start();
         }

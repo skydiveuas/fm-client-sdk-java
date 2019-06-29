@@ -5,9 +5,9 @@ import com.fleetmgr.interfaces.facade.control.*;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.system.capsule.Timer;
+import org.slf4j.Logger;
 
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -16,14 +16,16 @@ import java.util.logging.Level;
  */
 public class HeartbeatHandler {
 
-    private Client client;
-    private ClientBackend backend;
+    private final Logger logger;
+    private final Client client;
+    private final ClientBackend backend;
 
     private Timer timer;
 
     private AtomicLong lastReception;
 
     HeartbeatHandler(Client client, ClientBackend backend) {
+        this.logger = client.getLogger();
         this.client = client;
         this.backend = backend;
 
@@ -31,7 +33,7 @@ public class HeartbeatHandler {
     }
 
     public void start() {
-        client.log(Level.INFO, "Starting heartbeat verification task");
+        logger.info("Starting heartbeat verification task");
 
         lastReception.set(System.currentTimeMillis());
 
@@ -40,7 +42,7 @@ public class HeartbeatHandler {
     }
 
     public void end() {
-        client.log(Level.INFO, "Ending heartbeat verification task");
+        logger.info("Ending heartbeat verification task");
         if (timer != null) {
             timer.cancel();
             timer = null;

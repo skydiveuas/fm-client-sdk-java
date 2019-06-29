@@ -3,7 +3,10 @@ package com.fleetmgr.sdk.client.backend;
 import com.fleetmgr.interfaces.AttachResponse;
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.interfaces.OperateResponse;
-import com.fleetmgr.interfaces.facade.control.*;
+import com.fleetmgr.interfaces.facade.control.ClientMessage;
+import com.fleetmgr.interfaces.facade.control.ControlMessage;
+import com.fleetmgr.interfaces.facade.control.FacadeServiceGrpc;
+import com.fleetmgr.interfaces.facade.control.SetupResponse;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
@@ -15,12 +18,12 @@ import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
 import io.grpc.stub.StreamObserver;
 import org.cfg4j.provider.ConfigurationProvider;
+import org.slf4j.Logger;
 
 import javax.net.ssl.SSLException;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -29,6 +32,7 @@ import java.util.logging.Level;
  */
 public class ClientBackend implements StreamObserver<ControlMessage> {
 
+    private final Logger logger;
     private final ExecutorService executor;
     private final ConfigurationProvider configuration;
 
@@ -48,15 +52,15 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public ClientBackend(ExecutorService executor,
                          ConfigurationProvider configuration,
                          Client client,
-                         Client.Listener clientListener,
-                         CoreClient core) {
+                         Client.Listener clientListener) {
+        this.logger = client.getLogger();
         this.executor = executor;
         this.configuration = configuration;
 
         this.client = client;
         this.clientListener = clientListener;
 
-        this.core = core;
+        this.core = new CoreClient(configuration, logger);
 
         this.heartbeatHandler = new HeartbeatHandler(client, this);
         this.channelsHandler = new ChannelsHandler(client, executor);
@@ -124,13 +128,13 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
                     .sslContext(sslContext)
                     .overrideAuthority("localhost")
                     .build();
-            log(Level.INFO, "Started TLS gRPC channel");
+            logger.info("Started TLS gRPC channel");
         } else {
             channel = NettyChannelBuilder
                     .forAddress(ip, unsafePort)
                     .negotiationType(NegotiationType.PLAINTEXT)
                     .build();
-            log(Level.INFO, "Started Unsafe gRPC channel");
+            logger.info("Started Unsafe gRPC channel");
         }
 
         FacadeServiceGrpc.FacadeServiceStub stub = FacadeServiceGrpc.newStub(channel);
@@ -151,12 +155,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public void send(ClientMessage message) {
         ClientMessage verified = client.verifySending(message);
         if (verified != null) {
-            Level level = Level.INFO;
-            if (message.getCommand() == Command.HEARTBEAT) {
-                // for heartbeats set lower trace level, there will be a lot of these messages
-                level = Level.FINE;
-            }
-            log(level, "Sending:\n" + message + "@ " + client.getStateName());
+            logger.info(": {}: Sending:\n{}", client.getStateName(), message);
             toFacade.onNext(message);
         }
     }
@@ -168,16 +167,12 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
 
     @Override
     public void onError(Throwable t) {
-        log(Level.WARNING, "Facade connection failure: " + t.getMessage());
+        logger.warn("Facade connection failure: ", t);
     }
 
     @Override
     public void onCompleted() {
-        log(Level.INFO, "Facade connection closed");
-    }
-
-    public void log(Level level, String message) {
-        client.log(level, message);
+        logger.info("Facade connection closed");
     }
 
     @SuppressWarnings("SameParameterValue")

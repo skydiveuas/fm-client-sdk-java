@@ -1,6 +1,8 @@
 package com.fleetmgr.sdk.client.state;
 
-import java.util.logging.Level;
+import com.fleetmgr.interfaces.facade.control.ClientMessage;
+import com.fleetmgr.interfaces.facade.control.Command;
+import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.interfaces.facade.control.Response;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.backend.ClientBackend;
@@ -8,9 +10,8 @@ import com.fleetmgr.sdk.client.event.input.Event;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
-import com.fleetmgr.interfaces.facade.control.ClientMessage;
-import com.fleetmgr.interfaces.facade.control.Command;
-import com.fleetmgr.interfaces.facade.control.ControlMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by: Bartosz Nawrot
@@ -20,20 +21,23 @@ import com.fleetmgr.interfaces.facade.control.ControlMessage;
 public abstract class State implements
         com.fleetmgr.sdk.system.machine.State<Event> {
 
-    protected Client client;
-    protected Client.Listener listener;
+    protected final Logger logger;
+    protected final Client client;
+    protected final Client.Listener listener;
 
     protected ClientBackend backend;
 
     public State(Client client,
                  ClientBackend backend,
                  Client.Listener listener) {
+        this.logger = LoggerFactory.getLogger(client.getName() + ": " + toString());
         this.client = client;
         this.backend = backend;
         this.listener = listener;
     }
 
     public State(State state) {
+        this.logger = LoggerFactory.getLogger(state.client.getName() + ": " + toString());
         this.client = state.client;
         this.listener = state.listener;
         this.backend = state.backend;
@@ -48,7 +52,7 @@ public abstract class State implements
             return notifyEvent((UserEvent)event);
 
         } else {
-            log(Level.INFO, "Unexpected event type");
+            logger.info("Unexpected event type");
             return null;
         }
     }
@@ -62,7 +66,7 @@ public abstract class State implements
     }
 
     protected State defaultEventHandle(String eventName) {
-        log(Level.INFO, "Unexpected: " + eventName + " @ " + toString());
+        logger.info("Unexpected: {}", eventName);
         return null;
     }
 
@@ -79,7 +83,7 @@ public abstract class State implements
             backend.getHeartbeatHandler().handleHeartbeat(message);
 
         } else {
-            log(Level.INFO, "Unexpected ControlMessage received:\n" + message + " @ " + toString());
+            logger.info("Unexpected ControlMessage received:\n{}", message);
         }
         return null;
     }
@@ -88,9 +92,5 @@ public abstract class State implements
         return message.getResponse() == Response.UNDEFINED_RSP &&
                 (message.getCommand() == Command.RELEASE_CONTROL ||
                         message.getCommand() == Command.RELEASE);
-    }
-
-    protected void log(Level level, String message) {
-        listener.log(level, message);
     }
 }
