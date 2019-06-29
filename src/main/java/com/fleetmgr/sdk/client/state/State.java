@@ -52,7 +52,7 @@ public abstract class State implements
             return notifyEvent((UserEvent)event);
 
         } else {
-            logger.info("Unexpected event type");
+            logger.error("Unexpected event type");
             return null;
         }
     }
@@ -66,7 +66,7 @@ public abstract class State implements
     }
 
     protected State defaultEventHandle(String eventName) {
-        logger.info("Unexpected: {}", eventName);
+        logger.error("Unexpected: {}", eventName);
         return null;
     }
 
@@ -83,7 +83,7 @@ public abstract class State implements
             backend.getHeartbeatHandler().handleHeartbeat(message);
 
         } else {
-            logger.info("Unexpected ControlMessage received:\n{}", message);
+            logger.error("Unexpected ControlMessage received:\n{}", message);
         }
         return null;
     }
