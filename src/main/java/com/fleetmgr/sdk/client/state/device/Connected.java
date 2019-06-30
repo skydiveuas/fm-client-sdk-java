@@ -41,7 +41,8 @@ public class Connected extends State {
 
     private State onNewState(State newState) {
         while (newState != null) {
-            logger.info("Internal transition to {}", newState);
+            logger.info("{}: Internal transition to {}",
+                    toString(), newState);
             internalState = newState;
             newState = (State)internalState.start();
         }

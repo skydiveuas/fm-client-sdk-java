@@ -1,14 +1,13 @@
 package com.fleetmgr.sdk.client.state.device.connected;
 
-import java.util.logging.Level;
-import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
-import com.fleetmgr.sdk.client.event.input.connection.Received;
-import com.fleetmgr.sdk.client.event.input.user.UserEvent;
-import com.fleetmgr.sdk.client.state.State;
 import com.fleetmgr.interfaces.facade.control.ClientMessage;
 import com.fleetmgr.interfaces.facade.control.Command;
 import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.interfaces.facade.control.Response;
+import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
+import com.fleetmgr.sdk.client.event.input.connection.Received;
+import com.fleetmgr.sdk.client.event.input.user.UserEvent;
+import com.fleetmgr.sdk.client.state.State;
 
 /**
  * Created by: Bartosz Nawrot
@@ -57,7 +56,7 @@ public class Releasing extends State {
                 }
 
             case HEARTBEAT:
-                logger.info("Heartbeat ignored during release procedure");
+                logger.info("{}: Heartbeat ignored", toString());
                 return null;
 
             default:

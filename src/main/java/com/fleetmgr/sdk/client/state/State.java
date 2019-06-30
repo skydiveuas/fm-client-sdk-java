@@ -30,14 +30,14 @@ public abstract class State implements
     public State(Client client,
                  ClientBackend backend,
                  Client.Listener listener) {
-        this.logger = LoggerFactory.getLogger(client.getName() + ": " + toString());
+        this.logger = LoggerFactory.getLogger(client.getName());
         this.client = client;
         this.backend = backend;
         this.listener = listener;
     }
 
     public State(State state) {
-        this.logger = LoggerFactory.getLogger(state.client.getName() + ": " + toString());
+        this.logger = LoggerFactory.getLogger(state.client.getName());
         this.client = state.client;
         this.listener = state.listener;
         this.backend = state.backend;
@@ -52,7 +52,7 @@ public abstract class State implements
             return notifyEvent((UserEvent)event);
 
         } else {
-            logger.error("Unexpected event type");
+            logger.error("{}: Unexpected event type", toString());
             return null;
         }
     }
@@ -66,7 +66,8 @@ public abstract class State implements
     }
 
     protected State defaultEventHandle(String eventName) {
-        logger.error("Unexpected: {}", eventName);
+        logger.error("{}: Unexpected: {}",
+                toString(), eventName);
         return null;
     }
 
@@ -83,7 +84,8 @@ public abstract class State implements
             backend.getHeartbeatHandler().handleHeartbeat(message);
 
         } else {
-            logger.error("Unexpected ControlMessage received:\n{}", message);
+            logger.error("{}: Unexpected ControlMessage received:\n{}",
+                    toString(), message);
         }
         return null;
     }
