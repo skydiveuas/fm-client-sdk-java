@@ -56,7 +56,7 @@ public class Releasing extends State {
                 }
 
             case HEARTBEAT:
-                logger.info("{}: Heartbeat ignored", toString());
+                logger.debug("{}: Heartbeat ignored", toString());
                 return null;
 
             default:
