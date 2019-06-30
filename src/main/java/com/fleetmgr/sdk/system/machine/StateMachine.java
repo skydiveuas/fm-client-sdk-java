@@ -29,7 +29,8 @@ public abstract class StateMachine<Event> extends Capsule {
             getLogger().info("{}: Handling: {}", state, event);
             State<Event> newState = state.handleEvent(event);
             while (newState != null) {
-                getLogger().info("{}: Transition to: {}", state, newState);
+                getLogger().info("{}: Transition to: {}",
+                        state, newState);
                 state = newState;
                 newState = state.start();
             }
@@ -37,19 +38,22 @@ public abstract class StateMachine<Event> extends Capsule {
     }
 
     protected void setState(State<Event> state) {
+        getLogger().info("{}: Forced transition to: {}",
+                this.state, state);
         this.state = state;
         this.state.start();
     }
 
     public void defer(Event event) {
-        getLogger().debug(state + ": Deferring: " + event );
+        getLogger().debug("{}: Deferring: {}", state, event );
         deferred.add(event);
     }
 
     public void recall() {
         if (!deferred.isEmpty()) {
             Event event = deferred.poll();
-            getLogger().debug(state + ": Recalling: " + event +  ", remaining queue: " + deferred);
+            getLogger().debug("{}: Recalling: {}, remaining queue: {}",
+                    state, event, deferred);
             notifyEvent(event);
         }
     }
