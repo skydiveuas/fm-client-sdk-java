@@ -65,8 +65,9 @@ public class ChannelsHandler {
                 opened.put(c.getId(), channel);
 
                 logger.info("Channel id: {} validated", c.getId());
+
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Could not validate channel", e);
             }
         }
         return opened;

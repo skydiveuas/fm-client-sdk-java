@@ -67,7 +67,7 @@ public class TcpSocket extends Socket {
                 inputStream.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            listener.getLogger().error("Could not disconnect", e);
         }
 
         listener.onClosed();
@@ -96,7 +96,7 @@ public class TcpSocket extends Socket {
 
             } catch (IOException e) {
                 if (keepReception.get()) {
-                    e.printStackTrace();
+                    listener.getLogger().error("Reception problem", e);
                 }
                 break;
             } catch (InterruptedException ignored) {

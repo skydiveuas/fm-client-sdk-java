@@ -72,7 +72,7 @@ public class UdpSocket extends Socket {
                         datagramPacket.getLength());
             } catch (IOException e) {
                 if (!socket.isClosed()) {
-                    e.printStackTrace();
+                    listener.getLogger().error("Reception problem", e);
                 }
                 break;
             }
