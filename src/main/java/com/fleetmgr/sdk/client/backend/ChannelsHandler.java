@@ -58,7 +58,7 @@ public class ChannelsHandler {
                 logger.info("Opening channel, id: {}", c.getId());
 
                 Socket socket = buildSocket(c);
-                ChannelImpl channel = new ChannelImpl(c.getId(), socket);
+                ChannelImpl channel = new ChannelImpl(c.getId(), socket, logger);
                 channel.open(c.getHost(), c.getPort(), c.getKey());
 
                 channels.put(c.getId(), channel);

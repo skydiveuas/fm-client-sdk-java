@@ -1,6 +1,6 @@
 package com.fleetmgr.sdk.client.traffic;
 
-import java.util.logging.Level;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ public interface Channel {
     interface Listener {
         void onReceived(Channel channel, byte[] data, int size);
         void onClosed(Channel channel);
-        void log(Level level, String message);
+        Logger getLogger();
     }
 
     void setListener(Listener listener);
