@@ -37,7 +37,7 @@ public abstract class State implements
     }
 
     public State(State state) {
-        this.logger = LoggerFactory.getLogger(state.client.getName());
+        this.logger = state.logger;
         this.client = state.client;
         this.listener = state.listener;
         this.backend = state.backend;
