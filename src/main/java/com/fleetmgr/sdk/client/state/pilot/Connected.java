@@ -10,7 +10,6 @@ import com.fleetmgr.sdk.client.state.pilot.connected.Released;
 import com.fleetmgr.sdk.client.state.pilot.connected.ValidatingChannels;
 
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Created by: Bartosz Nawrot
@@ -47,7 +46,7 @@ public class Connected extends State {
     private State onNewState(State newState) {
         boolean dropped = internalState instanceof Recovering;
         while (newState != null) {
-            logger.info("Connected transition: " + toString() + " -> Connected." + newState.toString());
+            logger.info("Internal transition to {}", newState);
             internalState = newState;
             newState = (State)internalState.start();
         }

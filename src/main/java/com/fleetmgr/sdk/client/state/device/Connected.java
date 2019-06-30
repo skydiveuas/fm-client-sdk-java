@@ -7,8 +7,6 @@ import com.fleetmgr.sdk.client.state.State;
 import com.fleetmgr.sdk.client.state.device.connected.Ready;
 import com.fleetmgr.sdk.client.state.device.connected.Released;
 
-import java.util.logging.Level;
-
 /**
  * Created by: Bartosz Nawrot
  * Date: 23.09.2018
@@ -43,7 +41,7 @@ public class Connected extends State {
 
     private State onNewState(State newState) {
         while (newState != null) {
-            logger.info("Connected transition: " + toString() + " -> Connected." + newState.toString());
+            logger.info("Internal transition to {}", newState);
             internalState = newState;
             newState = (State)internalState.start();
         }
