@@ -33,7 +33,7 @@ public class Connecting extends State {
                             .build())
                     .build());
         } catch (IOException e) {
-            listener.onEvent(new Error(e.getMessage()));
+            listener.onEvent(new Error(new Throwable(e)));
             return new Disconnected(this);
         }
         return null;
@@ -63,7 +63,7 @@ public class Connecting extends State {
                     return new Connected(this);
 
                 } else {
-                    listener.onEvent(new Error(message.getMessage()));
+                    listener.onEvent(new Error(new Throwable(message.getMessage())));
                     return new Disconnecting(this);
                 }
                 

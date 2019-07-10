@@ -21,8 +21,6 @@ public class Connecting extends State {
     private long deviceId;
     private Collection<ChannelRequest> channels;
 
-    private Role role;
-
     Connecting(State state, long deviceId, Collection<ChannelRequest> channels) {
         super(state);
         this.deviceId = deviceId;
@@ -47,7 +45,7 @@ public class Connecting extends State {
                             .build())
                     .build());
         } catch (IOException e) {
-            listener.onEvent(new Error(e.getMessage()));
+            listener.onEvent(new Error(new Throwable(e)));
             return new Disconnected(this);
         }
         return null;

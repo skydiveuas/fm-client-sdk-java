@@ -7,17 +7,21 @@ package com.fleetmgr.sdk.client.event.output.facade;
  */
 public class Error extends FacadeEvent {
 
-    private String message;
+    private Throwable throwable;
 
-    public Error(String message) {
+    public Error(Throwable throwable) {
         super(Type.ERROR);
-        this.message = message;
+        this.throwable = throwable;
+    }
+
+    public Throwable getThrowable() {
+        return throwable;
     }
 
     @Override
     public String toString() {
         return "Error{" +
-                "message='" + message + '\'' +
+                "message='" + throwable.getMessage() + '\'' +
                 '}';
     }
 }
