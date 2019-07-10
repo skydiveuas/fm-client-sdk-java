@@ -33,7 +33,7 @@ public class CoreClient {
     }
 
     public AttachResponse attach() throws IOException {
-        String path = "/gateway/devices/attach";
+        String path = "/connections/devices";
         String response = client.execute(path, POST);
         AttachResponse.Builder builder = AttachResponse.newBuilder();
         JsonFormat.parser().ignoringUnknownFields().merge(response, builder);
@@ -41,7 +41,7 @@ public class CoreClient {
     }
 
     public OperateResponse operate(OperateRequest request) throws IOException {
-        String path = "/gateway/pilots/operate";
+        String path = "/connections/pilots";
         String body = JsonFormat.printer().print(request);
         String response = client.execute(path, POST, body);
         OperateResponse.Builder builder = OperateResponse.newBuilder();
