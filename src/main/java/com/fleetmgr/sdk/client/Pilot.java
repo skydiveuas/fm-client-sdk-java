@@ -35,7 +35,7 @@ public class Pilot extends Client {
         ListDevicesResponse response = listDevices();
 
         response.getDevicesList().stream()
-                .filter(device -> device.getConnectionState() == ConnectionState.CONNECTED)
+                .filter(device -> device.getConnection() == ConnectionState.CONNECTED)
                 .forEach(builder::addDevices);
 
         return builder.build();

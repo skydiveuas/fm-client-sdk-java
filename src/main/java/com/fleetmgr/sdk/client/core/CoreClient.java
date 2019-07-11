@@ -50,7 +50,7 @@ public class CoreClient {
     }
 
     public ListDevicesResponse listDevices() throws IOException {
-        String path = "/devices/";
+        String path = "/devices";
         String response = client.execute(path, GET);
         JSONObject responseJson = new JSONObject();
         responseJson.put("devices", new JSONArray(response));

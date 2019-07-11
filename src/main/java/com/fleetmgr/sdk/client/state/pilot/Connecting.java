@@ -32,7 +32,7 @@ public class Connecting extends State {
         try {
             OperateResponse operateResponse = backend.getCore().operate(
                     OperateRequest.newBuilder()
-                    .setRequestedDeviceId(deviceId)
+                    .setDeviceId(deviceId)
                     .build());
             backend.openFacadeConnection(operateResponse);
             send(ClientMessage.newBuilder()
