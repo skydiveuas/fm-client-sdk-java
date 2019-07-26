@@ -66,4 +66,8 @@ public class Capsule {
         }
         lock.unlock();
     }
+
+    public ExecutorService getExecutor() {
+        return executor;
+    }
 }
