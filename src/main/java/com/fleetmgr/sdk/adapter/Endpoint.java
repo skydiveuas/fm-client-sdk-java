@@ -22,8 +22,6 @@ public abstract class Endpoint {
 
     public abstract void initialize(String input) throws Exception;
 
-    public abstract void ready();
-
     public abstract void shutdown();
 
     public abstract void handleData(byte[] data, int size);
