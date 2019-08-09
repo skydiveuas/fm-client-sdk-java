@@ -9,6 +9,7 @@ import com.fleetmgr.sdk.client.traffic.socket.TcpSocket;
 import com.fleetmgr.sdk.client.traffic.socket.TlsTcpSocket;
 import com.fleetmgr.sdk.client.traffic.socket.UdpSocket;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -20,18 +21,13 @@ import java.util.concurrent.ExecutorService;
  */
 public class ChannelsHandler {
 
-    private final Logger logger;
-    private final Client client;
+    private static final Logger logger = LoggerFactory.getLogger(ChannelsHandler.class);
 
     private ExecutorService executor;
-
     private HashMap<Long, ChannelImpl> channels;
 
-    ChannelsHandler(Client client, ExecutorService executor) {
-        this.logger = client.getLogger();
-        this.client = client;
-        this.executor = executor;
-
+    ChannelsHandler(ClientBackend backend) {
+        this.executor = backend.getExecutor();
         this.channels = new HashMap<>();
     }
 

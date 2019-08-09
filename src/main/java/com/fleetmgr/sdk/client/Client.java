@@ -31,7 +31,7 @@ public abstract class Client extends StateMachine<Event> {
         Location getLocation();
     }
 
-    private final Logger logger;
+    protected static final Logger logger = LoggerFactory.getLogger(Client.class);
 
     private final String name;
     protected ClientBackend backend;
@@ -44,7 +44,6 @@ public abstract class Client extends StateMachine<Event> {
     Client(ExecutorService executor, ConfigurationProvider configuration,
            Listener listener, String name) {
         super(executor, null);
-        this.logger = LoggerFactory.getLogger(name);
         this.name = name;
         this.backend = new ClientBackend(executor, configuration,this, listener);
     }
@@ -67,12 +66,7 @@ public abstract class Client extends StateMachine<Event> {
     }
 
     @Override
-    public Logger getLogger() {
-        return logger;
-    }
-
-    @Override
     public String toString() {
-        return name;
+        return name + ":" + getStateName();
     }
 }

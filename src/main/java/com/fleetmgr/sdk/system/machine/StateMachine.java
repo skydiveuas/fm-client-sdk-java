@@ -1,7 +1,9 @@
 package com.fleetmgr.sdk.system.machine;
 
 import com.fleetmgr.sdk.system.capsule.Capsule;
+import com.fleetmgr.sdk.system.capsule.Timer;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Deque;
 import java.util.concurrent.ExecutorService;
@@ -13,6 +15,8 @@ import java.util.concurrent.LinkedBlockingDeque;
  * Description:
  */
 public abstract class StateMachine<Event> extends Capsule {
+
+    private static final Logger logger = LoggerFactory.getLogger(StateMachine.class);
 
     private State<Event> state;
 
@@ -26,10 +30,10 @@ public abstract class StateMachine<Event> extends Capsule {
 
     public void notifyEvent(Event event) {
         execute(() -> {
-            getLogger().info("{}: Handling: {}", state, event);
+            logger.debug("{}: Handling: {}", state, event);
             State<Event> newState = state.handleEvent(event);
             while (newState != null) {
-                getLogger().info("{}: Transition to: {}",
+                logger.info("{}: Transition to: {}",
                         state, newState);
                 state = newState;
                 newState = state.start();
@@ -37,22 +41,23 @@ public abstract class StateMachine<Event> extends Capsule {
         });
     }
 
-    protected void setState(State<Event> state) {
-        getLogger().info("{}: Forced transition to: {}",
-                this.state, state);
-        this.state = state;
-        this.state.start();
+    protected void setState(State<Event> newState) {
+        logger.info("{}: Forced transition to: {}",
+                state, newState);
+        state = newState;
+        state.start();
     }
 
     public void defer(Event event) {
-        getLogger().debug("{}: Deferring: {}", state, event );
+        logger.debug("{}: Deferring: {}",
+                state, event);
         deferred.add(event);
     }
 
     public void recall() {
         if (!deferred.isEmpty()) {
             Event event = deferred.poll();
-            getLogger().debug("{}: Recalling: {}, remaining queue: {}",
+            logger.debug("{}: Recalling: {}, remaining queue: {}",
                     state, event, deferred);
             notifyEvent(event);
         }
@@ -61,6 +66,4 @@ public abstract class StateMachine<Event> extends Capsule {
     public String getStateName() {
         return state.toString();
     }
-
-    protected abstract Logger getLogger();
 }

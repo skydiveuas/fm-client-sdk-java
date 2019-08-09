@@ -19,6 +19,7 @@ import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
 import io.grpc.stub.StreamObserver;
 import org.cfg4j.provider.ConfigurationProvider;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 import java.io.File;
@@ -32,7 +33,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class ClientBackend implements StreamObserver<ControlMessage> {
 
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(ClientBackend.class);
+
     private final ExecutorService executor;
     private final ConfigurationProvider configuration;
 
@@ -53,7 +55,6 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
                          ConfigurationProvider configuration,
                          Client client,
                          Client.Listener clientListener) {
-        this.logger = client.getLogger();
         this.executor = executor;
         this.configuration = configuration;
 
@@ -62,8 +63,12 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
 
         this.core = new CoreClient(configuration, logger);
 
-        this.heartbeatHandler = new HeartbeatHandler(client, this);
-        this.channelsHandler = new ChannelsHandler(client, executor);
+        this.heartbeatHandler = new HeartbeatHandler(this);
+        this.channelsHandler = new ChannelsHandler(this);
+    }
+
+    public Client getClient() {
+        return client;
     }
 
     public ExecutorService getExecutor() {

@@ -6,6 +6,7 @@ import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.system.capsule.Timer;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -16,7 +17,8 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class HeartbeatHandler {
 
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(HeartbeatHandler.class);
+
     private final Client client;
     private final ClientBackend backend;
 
@@ -24,9 +26,8 @@ public class HeartbeatHandler {
 
     private AtomicLong lastReception;
 
-    HeartbeatHandler(Client client, ClientBackend backend) {
-        this.logger = client.getLogger();
-        this.client = client;
+    HeartbeatHandler(ClientBackend backend) {
+        this.client = backend.getClient();
         this.backend = backend;
 
         this.lastReception = new AtomicLong(0);
