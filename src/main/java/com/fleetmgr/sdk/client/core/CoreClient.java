@@ -25,11 +25,11 @@ public class CoreClient {
 
     private final HttpsClient client;
 
-    public CoreClient(ConfigurationProvider configuration, Logger logger) {
+    public CoreClient(ConfigurationProvider configuration) {
         String apiKey = configuration.getProperty("core.apiKey", String.class);
         String host = configuration.getProperty("core.host", String.class);
         int port = configuration.getProperty("core.port", Integer.class);
-        this.client = new HttpsClient(host, port, apiKey, logger);
+        this.client = new HttpsClient(host, port, apiKey);
     }
 
     public AttachResponse attach() throws IOException {

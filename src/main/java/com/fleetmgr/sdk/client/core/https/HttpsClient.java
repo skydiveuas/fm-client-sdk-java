@@ -2,6 +2,7 @@ package com.fleetmgr.sdk.client.core.https;
 
 import com.google.api.HttpRule;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -24,19 +25,18 @@ import static com.google.api.HttpRule.PatternCase.GET;
  */
 public class HttpsClient {
 
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(HttpsClient.class);
 
     private final String address;
     private final String apiKey;
 
-    public HttpsClient(String host, int port, String apiKey, Logger logger) {
-        this("https://" + host + ":" + port, apiKey, logger);
+    public HttpsClient(String host, int port, String apiKey) {
+        this("https://" + host + ":" + port, apiKey);
     }
 
-    public HttpsClient(String address, String apiKey, Logger logger) {
+    public HttpsClient(String address, String apiKey) {
         this.address = address;
         this.apiKey = apiKey;
-        this.logger = logger;
     }
 
     public String execute(String path, HttpRule.PatternCase method) throws IOException {

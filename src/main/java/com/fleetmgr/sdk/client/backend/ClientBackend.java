@@ -61,7 +61,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         this.client = client;
         this.clientListener = clientListener;
 
-        this.core = new CoreClient(configuration, logger);
+        this.core = new CoreClient(configuration);
 
         this.heartbeatHandler = new HeartbeatHandler(this);
         this.channelsHandler = new ChannelsHandler(this);
@@ -160,7 +160,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public void send(ClientMessage message) {
         ClientMessage verified = client.verifySending(message);
         if (verified != null) {
-            logger.info("{}: Sending:\n{}", client.getStateName(), message);
+            logger.debug("{}: Sending:\n{}", client.getStateName(), message);
             toFacade.onNext(message);
         }
     }
