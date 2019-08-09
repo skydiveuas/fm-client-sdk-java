@@ -14,7 +14,6 @@ public interface Channel {
     interface Listener {
         void onReceived(Channel channel, byte[] data, int size);
         void onClosed(Channel channel);
-        Logger getLogger();
     }
 
     void setListener(Listener listener);
