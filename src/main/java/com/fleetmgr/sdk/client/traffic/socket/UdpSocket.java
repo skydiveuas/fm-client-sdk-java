@@ -1,6 +1,8 @@
 package com.fleetmgr.sdk.client.traffic.socket;
 
 import com.fleetmgr.interfaces.Protocol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -72,7 +74,7 @@ public class UdpSocket extends Socket {
                         datagramPacket.getLength());
             } catch (IOException e) {
                 if (!socket.isClosed()) {
-                    listener.getLogger().error("Reception problem", e);
+                    logger.error("Reception problem", e);
                 }
                 break;
             }

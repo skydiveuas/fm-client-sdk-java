@@ -21,7 +21,8 @@ import org.slf4j.LoggerFactory;
 public abstract class State implements
         com.fleetmgr.sdk.system.machine.State<Event> {
 
-    protected final Logger logger;
+    protected static final Logger logger = LoggerFactory.getLogger(State.class);
+
     protected final Client client;
     protected final Client.Listener listener;
 
@@ -30,14 +31,12 @@ public abstract class State implements
     public State(Client client,
                  ClientBackend backend,
                  Client.Listener listener) {
-        this.logger = LoggerFactory.getLogger(client.getName());
         this.client = client;
         this.backend = backend;
         this.listener = listener;
     }
 
     public State(State state) {
-        this.logger = state.logger;
         this.client = state.client;
         this.listener = state.listener;
         this.backend = state.backend;

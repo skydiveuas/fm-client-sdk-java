@@ -2,6 +2,7 @@ package com.fleetmgr.sdk.client.traffic.socket;
 
 import com.fleetmgr.interfaces.Protocol;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -14,10 +15,11 @@ public abstract class Socket {
 
     static final int BUFFER_SIZE = 0xFFF;
 
+    protected static final Logger logger = LoggerFactory.getLogger(Socket.class);
+
     public interface Listener {
         void onReceived(byte[] data, int size);
         void onClosed();
-        Logger getLogger();
     }
 
     protected Listener listener;

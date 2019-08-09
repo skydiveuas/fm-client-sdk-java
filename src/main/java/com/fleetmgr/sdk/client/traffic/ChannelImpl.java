@@ -5,13 +5,12 @@ import com.fleetmgr.interfaces.ValidateChannelRequest;
 import com.fleetmgr.interfaces.ValidateChannelResponse;
 import com.fleetmgr.sdk.client.traffic.socket.Socket;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class ChannelImpl implements Channel, Socket.Listener {
-
-    private final Logger logger;
 
     private final long id;
     private final Socket socket;
@@ -20,8 +19,7 @@ public class ChannelImpl implements Channel, Socket.Listener {
 
     private boolean owned;
 
-    public ChannelImpl(long id, Socket socket, Logger logger) {
-        this.logger = logger;
+    public ChannelImpl(long id, Socket socket) {
         this.id = id;
         this.socket = socket;
         this.listener = null;
@@ -90,11 +88,6 @@ public class ChannelImpl implements Channel, Socket.Listener {
         if (listener != null) {
             listener.onClosed(this);
         }
-    }
-
-    @Override
-    public Logger getLogger() {
-        return null;
     }
 
     @Override
