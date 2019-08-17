@@ -20,4 +20,5 @@ public class Status {
 
     private Type type;
     private String message;
+    private int lastWaypointId;
 }
