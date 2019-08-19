@@ -19,7 +19,6 @@ public abstract class Endpoint {
     public interface Controller {
         Client getClient();
         void send(byte[] data, int size);
-        void setExitCode(int exitCode);
     }
 
     @Setter
