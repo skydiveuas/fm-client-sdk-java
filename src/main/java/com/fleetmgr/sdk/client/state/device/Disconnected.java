@@ -1,10 +1,15 @@
 package com.fleetmgr.sdk.client.state.device;
 
+import com.fleetmgr.interfaces.facade.control.Command;
+import com.fleetmgr.interfaces.facade.control.ControlMessage;
+import com.fleetmgr.interfaces.facade.control.Response;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.backend.ClientBackend;
 import com.fleetmgr.sdk.client.core.CoreClient;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
+import com.fleetmgr.sdk.client.event.input.connection.Received;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
+import com.fleetmgr.sdk.client.event.output.facade.Error;
 import com.fleetmgr.sdk.client.state.State;
 
 import java.util.concurrent.ExecutorService;
@@ -44,6 +49,11 @@ public class Disconnected extends State {
 
     @Override
     public State notifyConnection(ConnectionEvent event) {
+        if (event.getType() == ConnectionEvent.Type.RECEIVED &&
+                ((Received)event).getMessage().getCommand() == Command.HEARTBEAT) {
+            logger.trace("{}: Ignored: {}", toString(), event.toString());
+            return null;
+        }
         return defaultEventHandle(event.toString());
     }
 
