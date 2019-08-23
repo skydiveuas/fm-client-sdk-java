@@ -16,5 +16,5 @@ import java.util.List;
 @ToString
 public class Mission {
 
-    private List<Waypoint> waypoints;
+    private List<Waypoint> path;
 }
