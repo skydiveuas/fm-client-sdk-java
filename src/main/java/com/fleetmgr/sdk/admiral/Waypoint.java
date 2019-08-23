@@ -16,7 +16,7 @@ import lombok.ToString;
 public class Waypoint {
 
     private double lat, lng, alt;
-    private double velocity;
+    private double vel;
 
     public Location getLocation() {
         return Location.newBuilder()
