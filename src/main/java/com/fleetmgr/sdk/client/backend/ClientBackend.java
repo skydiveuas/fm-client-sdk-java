@@ -133,13 +133,13 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
                     .sslContext(sslContext)
                     .overrideAuthority("localhost")
                     .build();
-            logger.info("Started TLS gRPC channel");
+            logger.info("{}: Started TLS gRPC channel", client);
         } else {
             channel = NettyChannelBuilder
                     .forAddress(ip, unsafePort)
                     .negotiationType(NegotiationType.PLAINTEXT)
                     .build();
-            logger.info("Started Unsafe gRPC channel");
+            logger.info("{}: Started Unsafe gRPC channel", client);
         }
 
         FacadeServiceGrpc.FacadeServiceStub stub = FacadeServiceGrpc.newStub(channel);
@@ -160,7 +160,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     public void send(ClientMessage message) {
         ClientMessage verified = client.verifySending(message);
         if (verified != null) {
-            logger.debug("{}: Sending:\n{}", client.getStateName(), message);
+            logger.debug("{}: Sending:\n{}", client, message);
             toFacade.onNext(message);
         }
     }
@@ -172,12 +172,12 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
 
     @Override
     public void onError(Throwable t) {
-        logger.warn("Facade connection failure: ", t);
+        logger.warn("{}: Facade connection failure: ", client, t);
     }
 
     @Override
     public void onCompleted() {
-        logger.info("Facade connection closed");
+        logger.info("{}: Facade connection closed", client);
     }
 
     @SuppressWarnings("SameParameterValue")

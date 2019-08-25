@@ -34,7 +34,7 @@ public class HeartbeatHandler {
     }
 
     public void start() {
-        logger.info("Starting heartbeat verification task");
+        logger.info("{}: Starting heartbeat verification task", client);
 
         lastReception.set(System.currentTimeMillis());
 
@@ -43,7 +43,7 @@ public class HeartbeatHandler {
     }
 
     public void end() {
-        logger.info("Ending heartbeat verification task");
+        logger.info("{}: Ending heartbeat verification task", client);
         if (timer != null) {
             timer.cancel();
             timer = null;
