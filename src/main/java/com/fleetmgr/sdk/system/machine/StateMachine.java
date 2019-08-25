@@ -29,11 +29,10 @@ public abstract class StateMachine<Event> extends Capsule {
 
     public void notifyEvent(Event event) {
         execute(() -> {
-            logger.debug("{}: Handling: {}", state, event);
+            logger.debug("{}: Handling: {}", this, event);
             State<Event> newState = state.handleEvent(event);
             while (newState != null) {
-                logger.info("{}: Transition to: {}",
-                        this, newState);
+                logger.info("{}: Transition to: {}", this, newState);
                 state = newState;
                 newState = state.start();
             }
@@ -41,23 +40,20 @@ public abstract class StateMachine<Event> extends Capsule {
     }
 
     protected void setState(State<Event> newState) {
-        logger.info("{}: Forced transition to: {}",
-                this, newState);
+        logger.info("{}: Forced transition to: {}", this, newState);
         state = newState;
         state.start();
     }
 
     public void defer(Event event) {
-        logger.debug("{}: Deferring: {}",
-                this, event);
+        logger.debug("{}: Deferring: {}", this, event);
         deferred.add(event);
     }
 
     public void recall() {
         if (!deferred.isEmpty()) {
             Event event = deferred.poll();
-            logger.debug("{}: Recalling: {}, remaining queue: {}",
-                    this, event, deferred);
+            logger.debug("{}: Recalling: {}, remaining queue: {}", this, event, deferred);
             notifyEvent(event);
         }
     }
