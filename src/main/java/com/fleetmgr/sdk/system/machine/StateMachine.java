@@ -63,6 +63,10 @@ public abstract class StateMachine<Event> extends Capsule {
     }
 
     public String getStateName() {
-        return state.toString();
+        if (state != null) {
+            return state.toString();
+        } else {
+            return "uninitialized";
+        }
     }
 }
