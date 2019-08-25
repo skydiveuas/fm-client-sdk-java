@@ -1,7 +1,6 @@
 package com.fleetmgr.sdk.system.machine;
 
 import com.fleetmgr.sdk.system.capsule.Capsule;
-import com.fleetmgr.sdk.system.capsule.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +33,7 @@ public abstract class StateMachine<Event> extends Capsule {
             State<Event> newState = state.handleEvent(event);
             while (newState != null) {
                 logger.info("{}: Transition to: {}",
-                        state, newState);
+                        this, newState);
                 state = newState;
                 newState = state.start();
             }
@@ -43,14 +42,14 @@ public abstract class StateMachine<Event> extends Capsule {
 
     protected void setState(State<Event> newState) {
         logger.info("{}: Forced transition to: {}",
-                state, newState);
+                this, newState);
         state = newState;
         state.start();
     }
 
     public void defer(Event event) {
         logger.debug("{}: Deferring: {}",
-                state, event);
+                this, event);
         deferred.add(event);
     }
 
@@ -58,7 +57,7 @@ public abstract class StateMachine<Event> extends Capsule {
         if (!deferred.isEmpty()) {
             Event event = deferred.poll();
             logger.debug("{}: Recalling: {}, remaining queue: {}",
-                    state, event, deferred);
+                    this, event, deferred);
             notifyEvent(event);
         }
     }
