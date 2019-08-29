@@ -9,7 +9,6 @@ import com.google.protobuf.util.JsonFormat;
 import org.cfg4j.provider.ConfigurationProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
 
 import java.io.IOException;
 
@@ -26,10 +25,9 @@ public class CoreClient {
     private final HttpsClient client;
 
     public CoreClient(ConfigurationProvider configuration) {
+        String address = configuration.getProperty("core.address", String.class);
         String apiKey = configuration.getProperty("core.apiKey", String.class);
-        String host = configuration.getProperty("core.host", String.class);
-        int port = configuration.getProperty("core.port", Integer.class);
-        this.client = new HttpsClient(host, port, apiKey);
+        this.client = new HttpsClient(address, apiKey);
     }
 
     public AttachResponse attach() throws IOException {
