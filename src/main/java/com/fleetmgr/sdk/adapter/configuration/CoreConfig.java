@@ -14,9 +14,8 @@ import lombok.ToString;
 @Setter
 public class CoreConfig {
 
+    String address;
     String apiKey;
-    String host;
-    int port;
 
     public CoreConfig validate() {
         return validate(this);
