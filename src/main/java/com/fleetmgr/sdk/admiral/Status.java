@@ -14,11 +14,11 @@ import lombok.ToString;
 @ToString
 public class Status {
 
-    public enum Type {
+    public enum Severity {
         NOMINAL, WARNING, ERROR
     }
 
-    private Type type;
+    private Severity type;
     private String message;
-    private int lastWaypointId;
+    private Integer lastCheckpoint;
 }
