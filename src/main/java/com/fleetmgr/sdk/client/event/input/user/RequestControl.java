@@ -17,4 +17,11 @@ public class RequestControl extends UserEvent {
     public long getChannelId() {
         return channelId;
     }
+
+    @Override
+    public String toString() {
+        return "RequestControl{" +
+                "channelId=" + channelId +
+                '}';
+    }
 }

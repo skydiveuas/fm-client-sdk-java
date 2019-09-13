@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -103,7 +104,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         return setupResponse;
     }
 
-    public void openFacadeConnection(AttachResponse attachResponse) throws SSLException {
+    public void openFacadeConnection(AttachResponse attachResponse) throws IOException {
         openFacadeConnection(
                 attachResponse.getHost(),
                 attachResponse.getUnsafePort(),
@@ -111,7 +112,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
                 configuration.getProperty("facade.useTls", Boolean.class));
     }
 
-    public void openFacadeConnection(OperateResponse operateResponse) throws SSLException {
+    public void openFacadeConnection(OperateResponse operateResponse) throws IOException {
         openFacadeConnection(
                 operateResponse.getHost(),
                 operateResponse.getUnsafePort(),
@@ -119,7 +120,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
                 configuration.getProperty("facade.useTls", Boolean.class));
     }
 
-    private void openFacadeConnection(String ip, int unsafePort, int tlsPort, boolean useTls) throws SSLException {
+    private void openFacadeConnection(String ip, int unsafePort, int tlsPort, boolean useTls) throws IOException {
         if (useTls) {
             SslContext sslContext =
                     buildSslContext(
@@ -183,7 +184,7 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
     @SuppressWarnings("SameParameterValue")
     private static SslContext buildSslContext(String trustCertCollectionFilePath,
                                               String clientCertChainFilePath,
-                                              String clientPrivateKeyFilePath) throws SSLException {
+                                              String clientPrivateKeyFilePath) throws IOException {
         SslContextBuilder builder = GrpcSslContexts.forClient();
         if (trustCertCollectionFilePath != null) {
             builder.trustManager(new File(trustCertCollectionFilePath));
