@@ -17,4 +17,11 @@ public class ReleaseControl extends FacadeEvent {
     public long getChannelId() {
         return channelId;
     }
+
+    @Override
+    public String toString() {
+        return "ReleaseControl{" +
+                "channelId=" + channelId +
+                '}';
+    }
 }

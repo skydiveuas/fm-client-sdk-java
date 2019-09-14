@@ -1,6 +1,5 @@
 package com.fleetmgr.sdk.client.event.output.facade;
 
-
 /**
  * Created by: Bartosz Nawrot
  * Date: 18.09.2018
@@ -17,5 +16,12 @@ public class HandoverAccepted extends FacadeEvent {
 
     public byte[] getData() {
         return data;
+    }
+
+    @Override
+    public String toString() {
+        return "HandoverAccepted{" +
+                "dataSize=" + data.length +
+                '}';
     }
 }

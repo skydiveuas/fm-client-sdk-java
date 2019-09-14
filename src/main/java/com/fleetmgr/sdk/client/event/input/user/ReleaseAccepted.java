@@ -12,9 +12,19 @@ public class ReleaseAccepted extends UserEvent {
     public ReleaseAccepted(byte[] data) {
         super(Type.RELEASE_ACCEPTED);
         this.data = data;
+        if (this.data == null) {
+            this.data = new byte[0];
+        }
     }
 
     public byte[] getData() {
         return data;
+    }
+
+    @Override
+    public String toString() {
+        return "ReleaseAccepted{" +
+                "dataSize=" + data.length +
+                '}';
     }
 }
