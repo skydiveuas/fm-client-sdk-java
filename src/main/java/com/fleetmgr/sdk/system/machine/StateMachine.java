@@ -30,11 +30,15 @@ public abstract class StateMachine<Event> extends Capsule {
     public void notifyEvent(Event event) {
         execute(() -> {
             logger.debug("{}: Handling: {}", this, event);
-            State<Event> newState = state.handleEvent(event);
-            while (newState != null) {
-                logger.info("{}: Transition to: {}", this, newState);
-                state = newState;
-                newState = state.start();
+            try {
+                State<Event> newState = state.handleEvent(event);
+                while (newState != null) {
+                    logger.info("{}: Transition to: {}", this, newState);
+                    state = newState;
+                    newState = state.start();
+                }
+            } catch (Exception e) {
+                logger.error("{}: Error during handling {}", this, event, e);
             }
         });
     }
