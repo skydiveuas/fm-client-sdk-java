@@ -11,17 +11,17 @@ import java.util.Collection;
  */
 public class Operate extends UserEvent {
 
-    private long deviceId;
+    private String deviceId;
 
     private Collection<ChannelRequest> channels;
 
-    public Operate(long deviceId, Collection<ChannelRequest> channels) {
+    public Operate(String deviceId, Collection<ChannelRequest> channels) {
         super(Type.OPERATE);
         this.deviceId = deviceId;
         this.channels = channels;
     }
 
-    public long getDeviceId() {
+    public String getDeviceId() {
         return deviceId;
     }
 

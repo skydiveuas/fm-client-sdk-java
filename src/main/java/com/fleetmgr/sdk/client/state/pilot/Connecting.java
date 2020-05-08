@@ -18,10 +18,10 @@ import java.util.Collection;
  */
 public class Connecting extends State {
 
-    private long deviceId;
+    private String deviceId;
     private Collection<ChannelRequest> channels;
 
-    Connecting(State state, long deviceId, Collection<ChannelRequest> channels) {
+    Connecting(State state, String deviceId, Collection<ChannelRequest> channels) {
         super(state);
         this.deviceId = deviceId;
         this.channels = channels;
