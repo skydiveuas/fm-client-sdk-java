@@ -4,7 +4,7 @@ import com.fleetmgr.interfaces.AttachResponse;
 import com.fleetmgr.interfaces.ListDevicesResponse;
 import com.fleetmgr.interfaces.OperateRequest;
 import com.fleetmgr.interfaces.OperateResponse;
-import com.fleetmgr.sdk.client.core.https.HttpsClient;
+import com.fleetmgr.sdk.client.core.http.HttpClient;
 import com.google.protobuf.util.JsonFormat;
 import org.cfg4j.provider.ConfigurationProvider;
 import org.json.JSONArray;
@@ -22,34 +22,53 @@ import static com.google.api.HttpRule.PatternCase.POST;
  */
 public class CoreClient {
 
-    private final HttpsClient client;
+    private final HttpClient client;
+    
+    private String address;
+    private String apiKey;
 
     public CoreClient(ConfigurationProvider configuration) {
-        String address = configuration.getProperty("core.address", String.class);
-        String apiKey = configuration.getProperty("core.apiKey", String.class);
-        this.client = new HttpsClient(address, apiKey);
+        this.client = new HttpClient();
+        this.address = configuration.getProperty("core.address", String.class);
+        this.apiKey = configuration.getProperty("core.apiKey", String.class);
     }
 
     public AttachResponse attach() throws IOException {
-        String path = "/connections/devices";
-        String response = client.execute(path, POST);
+        HttpClient.Call post = HttpClient.Call.builder()
+                .address(address)
+                .authorization(apiKey)
+                .path("/devices/sessions")
+                .method("POST")
+                .body(new JSONObject())
+                .build();
+        JSONObject response = client.execute(post);
         AttachResponse.Builder builder = AttachResponse.newBuilder();
-        JsonFormat.parser().ignoringUnknownFields().merge(response, builder);
+        JsonFormat.parser().ignoringUnknownFields().merge(response.toString(), builder);
         return builder.build();
     }
 
     public OperateResponse operate(OperateRequest request) throws IOException {
-        String path = "/connections/pilots";
-        String body = JsonFormat.printer().print(request);
-        String response = client.execute(path, POST, body);
+        HttpClient.Call post = HttpClient.Call.builder()
+                .address(address)
+                .authorization(apiKey)
+                .path("/controllers/sessions")
+                .method("POST")
+                .body(new JSONObject(JsonFormat.printer().print(request)))
+                .build();
+        JSONObject response = client.execute(post);
         OperateResponse.Builder builder = OperateResponse.newBuilder();
-        JsonFormat.parser().ignoringUnknownFields().merge(response, builder);
+        JsonFormat.parser().ignoringUnknownFields().merge(response.toString(), builder);
         return builder.build();
     }
 
     public ListDevicesResponse listDevices() throws IOException {
-        String path = "/devices";
-        String response = client.execute(path, GET);
+        HttpClient.Call get = HttpClient.Call.builder()
+                .address(address)
+                .authorization(apiKey)
+                .path("/devices/sessions")
+                .method("GET")
+                .build();
+        JSONObject response = client.execute(get);
         JSONObject responseJson = new JSONObject();
         responseJson.put("devices", new JSONArray(response));
         ListDevicesResponse.Builder builder = ListDevicesResponse.newBuilder();
