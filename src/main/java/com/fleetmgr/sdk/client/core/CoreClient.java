@@ -12,9 +12,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import static com.google.api.HttpRule.PatternCase.GET;
-import static com.google.api.HttpRule.PatternCase.POST;
-
 /**
  * Created by: Bartosz Nawrot
  * Date: 23.09.2018
@@ -65,8 +62,9 @@ public class CoreClient {
         HttpClient.Call get = HttpClient.Call.builder()
                 .address(address)
                 .authorization(apiKey)
-                .path("/devices/sessions")
+                .path("/devices")
                 .method("GET")
+                .body(new JSONObject())
                 .build();
         JSONObject response = client.execute(get);
         JSONObject responseJson = new JSONObject();
