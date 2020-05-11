@@ -21,15 +21,20 @@ public class HttpClient {
     private final OkHttpClient client = new OkHttpClient();
 
     public JSONObject execute(Call call) throws IOException {
-        RequestBody requestBody = RequestBody.create(
-                MediaType.parse("application/json; charset=utf-8"), 
-                call.body.toString());
-
-        Request request = new Request.Builder()
+        Request.Builder requestBuilder = new Request.Builder()
                 .url(call.address + call.path)
-                .addHeader("Authorization", call.authorization)
-                .method(call.method, requestBody)
-                .build();
+                .addHeader("Authorization", call.authorization);
+
+        if (call.body != null) {
+            RequestBody requestBody = RequestBody.create(
+                    MediaType.parse("application/json; charset=utf-8"),
+                    call.body.toString());
+            requestBuilder.method(call.method, requestBody);
+        } else {
+            requestBuilder.method(call.method, null);
+        }
+
+        Request request = requestBuilder.build();
 
         logger.info("Starting call: {}", call);
         Response response = client.newCall(request).execute();

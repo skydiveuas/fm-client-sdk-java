@@ -64,7 +64,6 @@ public class CoreClient {
                 .authorization(apiKey)
                 .path("/devices")
                 .method("GET")
-                .body(new JSONObject())
                 .build();
         JSONObject response = client.execute(get);
         JSONObject responseJson = new JSONObject();
