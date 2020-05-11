@@ -10,8 +10,6 @@ import org.cfg4j.provider.ConfigurationProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 /**
  * Created by: Bartosz Nawrot
  * Date: 23.09.2018
@@ -30,7 +28,7 @@ public class CoreClient {
         this.apiKey = configuration.getProperty("core.apiKey", String.class);
     }
 
-    public AttachResponse attach() throws IOException {
+    public AttachResponse attach() throws Exception {
         HttpClient.Call post = HttpClient.Call.builder()
                 .address(address)
                 .authorization(apiKey)
@@ -38,13 +36,13 @@ public class CoreClient {
                 .method("POST")
                 .body(new JSONObject())
                 .build();
-        JSONObject response = client.execute(post);
+        JSONObject response = client.execute(post, JSONObject.class);
         AttachResponse.Builder builder = AttachResponse.newBuilder();
         JsonFormat.parser().ignoringUnknownFields().merge(response.toString(), builder);
         return builder.build();
     }
 
-    public OperateResponse operate(OperateRequest request) throws IOException {
+    public OperateResponse operate(OperateRequest request) throws Exception {
         HttpClient.Call post = HttpClient.Call.builder()
                 .address(address)
                 .authorization(apiKey)
@@ -52,22 +50,22 @@ public class CoreClient {
                 .method("POST")
                 .body(new JSONObject(JsonFormat.printer().print(request)))
                 .build();
-        JSONObject response = client.execute(post);
+        JSONObject response = client.execute(post, JSONObject.class);
         OperateResponse.Builder builder = OperateResponse.newBuilder();
         JsonFormat.parser().ignoringUnknownFields().merge(response.toString(), builder);
         return builder.build();
     }
 
-    public ListDevicesResponse listDevices() throws IOException {
+    public ListDevicesResponse listDevices() throws Exception {
         HttpClient.Call get = HttpClient.Call.builder()
                 .address(address)
                 .authorization(apiKey)
                 .path("/devices")
                 .method("GET")
                 .build();
-        JSONObject response = client.execute(get);
+        JSONArray response = client.execute(get, JSONArray.class);
         JSONObject responseJson = new JSONObject();
-        responseJson.put("devices", new JSONArray(response));
+        responseJson.put("devices", response);
         ListDevicesResponse.Builder builder = ListDevicesResponse.newBuilder();
         JsonFormat.parser().ignoringUnknownFields().merge(responseJson.toString(), builder);
         return builder.build();

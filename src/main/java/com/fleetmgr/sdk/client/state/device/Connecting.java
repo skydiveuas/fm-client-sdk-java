@@ -32,7 +32,7 @@ public class Connecting extends State {
                             .setKey(attachResponse.getKey())
                             .build())
                     .build());
-        } catch (IOException e) {
+        } catch (Exception e) {
             listener.onEvent(new Error(new Throwable(e)));
             return new Disconnected(this);
         }

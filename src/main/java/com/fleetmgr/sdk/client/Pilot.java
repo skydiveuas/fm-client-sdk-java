@@ -5,7 +5,6 @@ import com.fleetmgr.interfaces.ListDevicesResponse;
 import com.fleetmgr.sdk.client.state.pilot.Disconnected;
 import org.cfg4j.provider.ConfigurationProvider;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -26,11 +25,11 @@ public class Pilot extends Client {
         setState(new Disconnected(this, backend, listener));
     }
 
-    public ListDevicesResponse listDevices() throws IOException {
+    public ListDevicesResponse listDevices() throws Exception {
         return backend.getCore().listDevices();
     }
 
-    public ListDevicesResponse listConnectedDevices() throws IOException {
+    public ListDevicesResponse listConnectedDevices() throws Exception {
         ListDevicesResponse.Builder builder = ListDevicesResponse.newBuilder();
         ListDevicesResponse response = listDevices();
 

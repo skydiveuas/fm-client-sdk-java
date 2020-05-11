@@ -44,7 +44,7 @@ public class Connecting extends State {
                             .addAllChannels(channels)
                             .build())
                     .build());
-        } catch (IOException e) {
+        } catch (Exception e) {
             listener.onEvent(new Error(new Throwable(e)));
             return new Disconnected(this);
         }

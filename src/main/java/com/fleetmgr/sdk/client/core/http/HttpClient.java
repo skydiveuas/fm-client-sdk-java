@@ -20,7 +20,7 @@ public class HttpClient {
 
     private final OkHttpClient client = new OkHttpClient();
 
-    public JSONObject execute(Call call) throws IOException {
+    public <R> R execute(Call call, Class<R> responseClass) throws Exception {
         Request.Builder requestBuilder = new Request.Builder()
                 .url(call.address + call.path)
                 .addHeader("Authorization", call.authorization);
@@ -43,7 +43,8 @@ public class HttpClient {
         if (response.isSuccessful()) {
             logger.info("Call finished, status:{}, responseBody:{}",
                     response.code(), responseString);
-            return new JSONObject(responseString);
+            return responseClass.getDeclaredConstructor(String.class)
+                    .newInstance(responseString);
         } else {
             logger.error("Call failed, status:{}, responseBody:{}",
                     response.code(), responseString);
