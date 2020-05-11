@@ -24,8 +24,8 @@ public class CoreClient {
 
     private final HttpClient client;
     
-    private String address;
-    private String apiKey;
+    private final String address;
+    private final String apiKey;
 
     public CoreClient(ConfigurationProvider configuration) {
         this.client = new HttpClient();
