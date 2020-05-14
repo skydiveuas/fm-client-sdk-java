@@ -1,14 +1,13 @@
 package com.fleetmgr.sdk.client.backend;
 
-import com.fleetmgr.interfaces.AttachResponse;
 import com.fleetmgr.interfaces.Location;
-import com.fleetmgr.interfaces.OperateResponse;
 import com.fleetmgr.interfaces.facade.control.ClientMessage;
 import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.interfaces.facade.control.FacadeServiceGrpc;
 import com.fleetmgr.interfaces.facade.control.SetupResponse;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.core.CoreClient;
+import com.fleetmgr.sdk.client.core.model.FacadeResponse;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
@@ -21,7 +20,6 @@ import org.cfg4j.provider.ConfigurationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.SSLException;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -104,19 +102,11 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         return setupResponse;
     }
 
-    public void openFacadeConnection(AttachResponse attachResponse) throws IOException {
+    public void openFacadeConnection(FacadeResponse facadeResponse) throws IOException {
         openFacadeConnection(
-                attachResponse.getHost(),
-                attachResponse.getUnsafePort(),
-                attachResponse.getTlsPort(),
-                configuration.getProperty("facade.useTls", Boolean.class));
-    }
-
-    public void openFacadeConnection(OperateResponse operateResponse) throws IOException {
-        openFacadeConnection(
-                operateResponse.getHost(),
-                operateResponse.getUnsafePort(),
-                operateResponse.getTlsPort(),
+                facadeResponse.getHost(),
+                facadeResponse.getUnsafePort(),
+                facadeResponse.getTlsPort(),
                 configuration.getProperty("facade.useTls", Boolean.class));
     }
 

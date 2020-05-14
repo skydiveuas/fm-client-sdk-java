@@ -1,14 +1,16 @@
 package com.fleetmgr.sdk.client.state.pilot;
 
-import com.fleetmgr.interfaces.*;
+import com.fleetmgr.interfaces.ChannelRequest;
+import com.fleetmgr.interfaces.ChannelRequestList;
+import com.fleetmgr.interfaces.facade.control.*;
+import com.fleetmgr.sdk.client.core.model.FacadeResponse;
+import com.fleetmgr.sdk.client.core.model.OperateRequest;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
 import com.fleetmgr.sdk.client.event.output.facade.Error;
 import com.fleetmgr.sdk.client.state.State;
-import com.fleetmgr.interfaces.facade.control.*;
 
-import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -30,15 +32,15 @@ public class Connecting extends State {
     @Override
     public State start() {
         try {
-            OperateResponse operateResponse = backend.getCore().operate(
-                    OperateRequest.newBuilder()
-                    .setDeviceId(deviceId)
+            FacadeResponse facadeResponse = backend.getCore().operate(
+                    OperateRequest.builder()
+                    .deviceId(deviceId)
                     .build());
-            backend.openFacadeConnection(operateResponse);
+            backend.openFacadeConnection(facadeResponse);
             send(ClientMessage.newBuilder()
                     .setCommand(Command.SETUP)
                     .setSetupRequest(SetupRequest.newBuilder()
-                            .setKey(operateResponse.getKey())
+                            .setKey(facadeResponse.getKey())
                             .build())
                     .setChannelsRequest(ChannelRequestList.newBuilder()
                             .addAllChannels(channels)

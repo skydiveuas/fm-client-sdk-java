@@ -1,14 +1,12 @@
 package com.fleetmgr.sdk.client.state.device;
 
-import com.fleetmgr.interfaces.AttachResponse;
 import com.fleetmgr.interfaces.facade.control.*;
+import com.fleetmgr.sdk.client.core.model.FacadeResponse;
 import com.fleetmgr.sdk.client.event.input.connection.ConnectionEvent;
 import com.fleetmgr.sdk.client.event.input.connection.Received;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
 import com.fleetmgr.sdk.client.event.output.facade.Error;
 import com.fleetmgr.sdk.client.state.State;
-
-import java.io.IOException;
 
 /**
  * Created by: Bartosz Nawrot
@@ -24,12 +22,12 @@ public class Connecting extends State {
     @Override
     public State start() {
         try {
-            AttachResponse attachResponse = backend.getCore().attach();
-            backend.openFacadeConnection(attachResponse);
+            FacadeResponse facadeResponse = backend.getCore().attach();
+            backend.openFacadeConnection(facadeResponse);
             send(ClientMessage.newBuilder()
                     .setCommand(Command.SETUP)
                     .setSetupRequest(SetupRequest.newBuilder()
-                            .setKey(attachResponse.getKey())
+                            .setKey(facadeResponse.getKey())
                             .build())
                     .build());
         } catch (Exception e) {

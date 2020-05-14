@@ -1,14 +1,14 @@
 package com.fleetmgr.sdk.client.core;
 
-import com.fleetmgr.interfaces.AttachResponse;
-import com.fleetmgr.interfaces.ListDevicesResponse;
-import com.fleetmgr.interfaces.OperateRequest;
-import com.fleetmgr.interfaces.OperateResponse;
 import com.fleetmgr.sdk.client.core.http.HttpClient;
-import com.google.protobuf.util.JsonFormat;
+import com.fleetmgr.sdk.client.core.model.FacadeResponse;
+import com.fleetmgr.sdk.client.core.model.OperateRequest;
 import org.cfg4j.provider.ConfigurationProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by: Bartosz Nawrot
@@ -28,7 +28,7 @@ public class CoreClient {
         this.apiKey = configuration.getProperty("core.apiKey", String.class);
     }
 
-    public AttachResponse attach() throws Exception {
+    public FacadeResponse attach() throws Exception {
         HttpClient.Call post = HttpClient.Call.builder()
                 .address(address)
                 .authorization(apiKey)
@@ -36,27 +36,21 @@ public class CoreClient {
                 .method("POST")
                 .body(new JSONObject())
                 .build();
-        JSONObject response = client.execute(post, JSONObject.class);
-        AttachResponse.Builder builder = AttachResponse.newBuilder();
-        JsonFormat.parser().ignoringUnknownFields().merge(response.toString(), builder);
-        return builder.build();
+        return FacadeResponse.parse(client.execute(post, JSONObject.class));
     }
 
-    public OperateResponse operate(OperateRequest request) throws Exception {
+    public FacadeResponse operate(OperateRequest request) throws Exception {
         HttpClient.Call post = HttpClient.Call.builder()
                 .address(address)
                 .authorization(apiKey)
                 .path("/controllers/sessions")
                 .method("POST")
-                .body(new JSONObject(JsonFormat.printer().print(request)))
+                .body(request.toJson())
                 .build();
-        JSONObject response = client.execute(post, JSONObject.class);
-        OperateResponse.Builder builder = OperateResponse.newBuilder();
-        JsonFormat.parser().ignoringUnknownFields().merge(response.toString(), builder);
-        return builder.build();
+        return FacadeResponse.parse(client.execute(post, JSONObject.class));
     }
 
-    public ListDevicesResponse listDevices() throws Exception {
+    public List<String> listDevices() throws Exception {
         HttpClient.Call get = HttpClient.Call.builder()
                 .address(address)
                 .authorization(apiKey)
@@ -64,10 +58,25 @@ public class CoreClient {
                 .method("GET")
                 .build();
         JSONArray response = client.execute(get, JSONArray.class);
-        JSONObject responseJson = new JSONObject();
-        responseJson.put("devices", response);
-        ListDevicesResponse.Builder builder = ListDevicesResponse.newBuilder();
-        JsonFormat.parser().ignoringUnknownFields().merge(responseJson.toString(), builder);
-        return builder.build();
+        ArrayList<String> result = new ArrayList<>();
+        for (int i = 0; i < response.length(); i++) {
+            result.add(response.getJSONObject(i).getString("id"));
+        }
+        return result;
+    }
+
+    public List<String> listConnectedDevices() throws Exception {
+        HttpClient.Call get = HttpClient.Call.builder()
+                .address(address)
+                .authorization(apiKey)
+                .path("/devices/sessions")
+                .method("GET")
+                .build();
+        JSONArray response = client.execute(get, JSONArray.class);
+        ArrayList<String> result = new ArrayList<>();
+        for (int i = 0; i < response.length(); i++) {
+            result.add(response.getJSONObject(i).getString("device"));
+        }
+        return result;
     }
 }

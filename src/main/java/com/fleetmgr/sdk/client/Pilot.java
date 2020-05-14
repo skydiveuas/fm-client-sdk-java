@@ -1,10 +1,9 @@
 package com.fleetmgr.sdk.client;
 
-import com.fleetmgr.interfaces.ConnectionState;
-import com.fleetmgr.interfaces.ListDevicesResponse;
 import com.fleetmgr.sdk.client.state.pilot.Disconnected;
 import org.cfg4j.provider.ConfigurationProvider;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -25,18 +24,11 @@ public class Pilot extends Client {
         setState(new Disconnected(this, backend, listener));
     }
 
-    public ListDevicesResponse listDevices() throws Exception {
+    public List<String> listDevices() throws Exception {
         return backend.getCore().listDevices();
     }
 
-    public ListDevicesResponse listConnectedDevices() throws Exception {
-        ListDevicesResponse.Builder builder = ListDevicesResponse.newBuilder();
-        ListDevicesResponse response = listDevices();
-
-        response.getDevicesList().stream()
-                .filter(device -> device.getConnection() == ConnectionState.CONNECTED)
-                .forEach(builder::addDevices);
-
-        return builder.build();
+    public List<String> listConnectedDevices() throws Exception {
+        return backend.getCore().listConnectedDevices();
     }
 }
