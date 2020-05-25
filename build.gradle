@@ -35,7 +35,8 @@ dependencies {
 
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'org.json:json:20180813'
-    
+    compile 'org.yaml:snakeyaml:1.8'
+
     compile 'org.projectlombok:lombok:1.18.4'
 
     testCompile 'junit:junit:4.12'
