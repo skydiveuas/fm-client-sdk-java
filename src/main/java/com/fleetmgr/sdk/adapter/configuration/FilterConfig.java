@@ -1,4 +1,4 @@
-package com.fleetmgr.adapter.configuration;
+package com.fleetmgr.sdk.adapter.configuration;
 
 import lombok.Getter;
 import lombok.Setter;

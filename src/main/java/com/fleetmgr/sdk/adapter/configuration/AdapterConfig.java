@@ -1,4 +1,4 @@
-package com.fleetmgr.adapter.configuration;
+package com.fleetmgr.sdk.adapter.configuration;
 
 import com.fleetmgr.interfaces.Role;
 import lombok.Getter;

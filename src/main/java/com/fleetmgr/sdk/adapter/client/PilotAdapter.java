@@ -1,8 +1,9 @@
-package com.fleetmgr.adapter;
+package com.fleetmgr.sdk.adapter.client;
 
-import com.fleetmgr.adapter.configuration.ChannelConfig;
-import com.fleetmgr.adapter.configuration.AdapterConfig;
-import com.fleetmgr.adapter.endpoint.EndpointHandle;
+import com.fleetmgr.sdk.adapter.Adapter;
+import com.fleetmgr.sdk.adapter.configuration.ChannelConfig;
+import com.fleetmgr.sdk.adapter.configuration.AdapterConfig;
+import com.fleetmgr.sdk.adapter.endpoint.EndpointHandle;
 import com.fleetmgr.interfaces.ChannelRequest;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.Pilot;

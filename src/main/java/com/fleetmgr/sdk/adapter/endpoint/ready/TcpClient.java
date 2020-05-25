@@ -1,4 +1,4 @@
-package com.fleetmgr.adapter.endpoint.ready;
+package com.fleetmgr.sdk.adapter.endpoint.ready;
 
 import com.fleetmgr.sdk.adapter.Endpoint;
 import com.fleetmgr.sdk.client.traffic.socket.Socket;

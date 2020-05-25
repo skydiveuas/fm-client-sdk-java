@@ -1,4 +1,4 @@
-package com.fleetmgr.adapter.configuration;
+package com.fleetmgr.sdk.adapter.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,16 +12,17 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class CoreConfig {
+public class LocationConfig {
 
-    String address;
-    String apiKey;
+    Double lat;
+    Double lon;
+    Double alt;
 
-    public CoreConfig validate() {
+    public LocationConfig validate() {
         return validate(this);
     }
 
-    public static CoreConfig validate(CoreConfig yaml) {
+    public static LocationConfig validate(LocationConfig yaml) {
         // TODO implement validation
         return yaml;
     }

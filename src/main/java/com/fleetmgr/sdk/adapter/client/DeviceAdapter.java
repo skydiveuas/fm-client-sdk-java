@@ -1,6 +1,7 @@
-package com.fleetmgr.adapter;
+package com.fleetmgr.sdk.adapter.client;
 
-import com.fleetmgr.adapter.configuration.AdapterConfig;
+import com.fleetmgr.sdk.adapter.Adapter;
+import com.fleetmgr.sdk.adapter.configuration.AdapterConfig;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.Device;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;

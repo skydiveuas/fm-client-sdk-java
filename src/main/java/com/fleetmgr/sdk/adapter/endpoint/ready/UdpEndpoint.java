@@ -1,16 +1,13 @@
-package com.fleetmgr.adapter.endpoint.ready;
+package com.fleetmgr.sdk.adapter.endpoint.ready;
 
 import com.fleetmgr.sdk.adapter.Endpoint;
 import com.fleetmgr.sdk.client.traffic.socket.Socket;
-import com.fleetmgr.sdk.client.traffic.socket.TcpSocket;
 import com.fleetmgr.sdk.client.traffic.socket.UdpSocket;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 
 /**
  * Created by: Bartosz Nawrot

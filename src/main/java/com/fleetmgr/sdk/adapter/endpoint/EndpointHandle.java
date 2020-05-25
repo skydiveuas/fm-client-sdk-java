@@ -1,9 +1,9 @@
-package com.fleetmgr.adapter.endpoint;
+package com.fleetmgr.sdk.adapter.endpoint;
 
-import com.fleetmgr.adapter.Adapter;
-import com.fleetmgr.adapter.configuration.ChannelConfig;
-import com.fleetmgr.adapter.configuration.EndpointConfig;
-import com.fleetmgr.adapter.configuration.FilterConfig;
+import com.fleetmgr.sdk.adapter.Adapter;
+import com.fleetmgr.sdk.adapter.configuration.ChannelConfig;
+import com.fleetmgr.sdk.adapter.configuration.EndpointConfig;
+import com.fleetmgr.sdk.adapter.configuration.FilterConfig;
 import com.fleetmgr.sdk.adapter.Filter;
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.sdk.adapter.Endpoint;

@@ -1,4 +1,4 @@
-package com.fleetmgr.adapter.endpoint.ready;
+package com.fleetmgr.sdk.adapter.endpoint.ready;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;

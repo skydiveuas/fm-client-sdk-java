@@ -1,7 +1,7 @@
-package com.fleetmgr.adapter.api;
+package com.fleetmgr.sdk.adapter.api;
 
-import com.fleetmgr.adapter.Adapter;
-import com.fleetmgr.adapter.configuration.ApiConfig;
+import com.fleetmgr.sdk.adapter.Adapter;
+import com.fleetmgr.sdk.adapter.configuration.ApiConfig;
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.sdk.client.event.input.user.RequestControl;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;

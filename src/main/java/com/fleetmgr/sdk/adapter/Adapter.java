@@ -1,9 +1,9 @@
-package com.fleetmgr.adapter;
+package com.fleetmgr.sdk.adapter;
 
-import com.fleetmgr.adapter.api.Service;
-import com.fleetmgr.adapter.configuration.AdapterConfig;
-import com.fleetmgr.adapter.configuration.ChannelConfig;
-import com.fleetmgr.adapter.endpoint.EndpointHandle;
+import com.fleetmgr.sdk.adapter.api.Service;
+import com.fleetmgr.sdk.adapter.configuration.AdapterConfig;
+import com.fleetmgr.sdk.adapter.configuration.ChannelConfig;
+import com.fleetmgr.sdk.adapter.endpoint.EndpointHandle;
 import com.fleetmgr.interfaces.Location;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.event.output.facade.ChannelsClosing;
@@ -38,18 +38,21 @@ public abstract class Adapter implements
     private static final Logger logger = LoggerFactory.getLogger(Adapter.class);
 
     @Getter
+    protected
     AdapterConfig adapterConfig;
     @Getter
+    protected
     ExecutorService executor;
 
     @Getter
+    protected
     HashMap<Long, EndpointHandle> endpoints;
 
     @Setter
     @Getter
     Location location;
 
-    Adapter(ExecutorService executor, AdapterConfig adapterConfig) {
+    protected Adapter(ExecutorService executor, AdapterConfig adapterConfig) {
         this.executor = executor;
         this.adapterConfig = adapterConfig;
         this.endpoints = new HashMap<>();
