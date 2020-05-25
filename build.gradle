@@ -28,6 +28,8 @@ dependencies {
     compile "io.grpc:grpc-stub:${grpcVersion}"
     compile "com.google.protobuf:protobuf-java-util:${protobufVersion}"
 
+    compile 'org.scream3r:jssc:2.8.0'
+
     compile 'org.slf4j:slf4j-api:1.7.2'
     compile 'org.cfg4j:cfg4j-core:4.4.0'
 
