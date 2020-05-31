@@ -1,9 +1,7 @@
 package com.fleetmgr.sdk.adapter.configuration;
 
 import com.fleetmgr.interfaces.Role;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,11 +15,14 @@ import java.util.Map;
 @ToString
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AdapterConfig {
 
     private Role role;
-    private String deviceId;
-    private String serialId;
+    private String device;
+    private String serial;
     private ApiConfig api;
     private LocationConfig location;
     private CoreConfig core;
@@ -39,10 +40,10 @@ public class AdapterConfig {
         }
         result.setRole(yaml.role);
 
-        if (result.getRole() == Role.PILOT && yaml.deviceId == null && yaml.serialId == null) {
+        if (result.getRole() == Role.PILOT && yaml.device == null && yaml.serial == null) {
             throw new Exception("DeviceId and SerialId is mandatory when Role == PILOT");
         }
-        result.setDeviceId(yaml.deviceId);
+        result.setDevice(yaml.device);
 
         if (yaml.api != null) {
             result.setApi(yaml.api.validate());

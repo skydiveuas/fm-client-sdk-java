@@ -21,9 +21,17 @@ public class HttpClient {
     private final OkHttpClient client = new OkHttpClient();
 
     public <R> R execute(Call call, Class<R> responseClass) throws Exception {
-        Request.Builder requestBuilder = new Request.Builder()
-                .url(call.address + call.path)
-                .addHeader("Authorization", call.authorization);
+        Request.Builder requestBuilder = new Request.Builder();
+
+        if (call.url != null) {
+            requestBuilder.url(call.url);
+        } else {
+            requestBuilder.url(call.address + call.path);
+        }
+
+        if (call.authorization != null) {
+            requestBuilder.addHeader("Authorization", call.authorization);
+        }
 
         if (call.body != null) {
             RequestBody requestBody = RequestBody.create(
@@ -55,6 +63,7 @@ public class HttpClient {
     @Builder
     @ToString
     public static class Call {
+        private final String url;
         private final String address;
         private final String path;
         private final String authorization;

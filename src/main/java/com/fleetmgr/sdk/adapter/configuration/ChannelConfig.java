@@ -4,9 +4,7 @@ import com.fleetmgr.interfaces.Priority;
 import com.fleetmgr.interfaces.Protocol;
 import com.fleetmgr.interfaces.Role;
 import com.fleetmgr.interfaces.Security;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * Created by: Bartosz Nawrot
@@ -16,6 +14,9 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ChannelConfig {
 
     public enum HoPolicy {
