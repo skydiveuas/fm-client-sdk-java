@@ -1,5 +1,8 @@
 package com.fleetmgr.sdk.client.event.input.user;
 
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.Collection;
 
 /**
@@ -7,23 +10,14 @@ import java.util.Collection;
  * Date: 18.09.2018
  * Description:
  */
+@Getter
+@ToString
 public class CloseChannels extends UserEvent {
 
-    private Collection<Long> channels;
+    private final Collection<Long> channels;
 
     public CloseChannels(Collection<Long> channels) {
         super(Type.CLOSE_CHANNELS);
         this.channels = channels;
-    }
-
-    public Collection<Long> getChannels() {
-        return channels;
-    }
-
-    @Override
-    public String toString() {
-        return "CloseChannels{" +
-                "channels=" + channels +
-                '}';
     }
 }

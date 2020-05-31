@@ -1,6 +1,8 @@
 package com.fleetmgr.sdk.client.event.input.user;
 
 import com.fleetmgr.interfaces.ChannelRequest;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Collection;
 
@@ -10,23 +12,14 @@ import java.util.Collection;
  * Date: 18.09.2018
  * Description:
  */
+@Getter
+@ToString
 public class OpenChannels extends UserEvent {
 
-    private Collection<ChannelRequest> channels;
+    private final Collection<ChannelRequest> channels;
 
     public OpenChannels(Collection<ChannelRequest> channels) {
         super(Type.OPEN_CHANNELS);
         this.channels = channels;
-    }
-
-    public Collection<ChannelRequest> getChannels() {
-        return channels;
-    }
-
-    @Override
-    public String toString() {
-        return "OpenChannels{" +
-                "channels=" + channels +
-                '}';
     }
 }

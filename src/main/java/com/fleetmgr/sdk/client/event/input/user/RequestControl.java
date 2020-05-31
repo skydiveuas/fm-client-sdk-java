@@ -1,27 +1,21 @@
 package com.fleetmgr.sdk.client.event.input.user;
 
+import lombok.Getter;
+import lombok.ToString;
+
 /**
  * Created by: Bartosz Nawrot
  * Date: 18.09.2018
  * Description:
  */
+@Getter
+@ToString
 public class RequestControl extends UserEvent {
 
-    private long channelId;
+    private final Long channel;
 
-    public RequestControl(long channelId) {
+    public RequestControl(long channel) {
         super(Type.REQUEST_CONTROL);
-        this.channelId = channelId;
-    }
-
-    public long getChannelId() {
-        return channelId;
-    }
-
-    @Override
-    public String toString() {
-        return "RequestControl{" +
-                "channelId=" + channelId +
-                '}';
+        this.channel = channel;
     }
 }

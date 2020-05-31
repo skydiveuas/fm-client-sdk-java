@@ -1,12 +1,16 @@
 package com.fleetmgr.sdk.client.event.input.user;
 
 import com.fleetmgr.sdk.client.event.input.Event;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Created by: Bartosz Nawrot
  * Date: 18.09.2018
  * Description:
  */
+@Getter
+@ToString
 public class UserEvent implements Event {
 
     public enum Type {
@@ -21,20 +25,9 @@ public class UserEvent implements Event {
         CLOSE_CHANNELS,
     }
 
-    private Type type;
+    private final Type type;
 
     public UserEvent(Type type) {
         this.type = type;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    @Override
-    public String toString() {
-        return "UserEvent{" +
-                "type=" + type +
-                '}';
     }
 }

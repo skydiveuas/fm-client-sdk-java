@@ -45,7 +45,7 @@ public class Operating extends State {
 
             case REQUEST_CONTROL:
                 RequestControl requestControl = (RequestControl)event;
-                return new RequestingControl(this, requestControl.getChannelId());
+                return new RequestingControl(this, requestControl.getChannel());
 
             case RELEASE:
                 // release is considered as wildcard for closing all channels

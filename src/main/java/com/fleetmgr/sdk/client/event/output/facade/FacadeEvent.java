@@ -1,10 +1,15 @@
 package com.fleetmgr.sdk.client.event.output.facade;
 
+import lombok.Getter;
+import lombok.ToString;
+
 /**
  * Created by: Bartosz Nawrot
  * Date: 18.09.2018
  * Description:
  */
+@Getter
+@ToString
 public class FacadeEvent {
 
     public enum Type {
@@ -26,20 +31,9 @@ public class FacadeEvent {
         CONNECTION_RECOVERED,
     }
 
-    private Type type;
+    private final Type type;
 
     public FacadeEvent(Type type) {
         this.type = type;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    @Override
-    public String toString() {
-        return "FacadeEvent{" +
-                "type=" + type +
-                '}';
     }
 }

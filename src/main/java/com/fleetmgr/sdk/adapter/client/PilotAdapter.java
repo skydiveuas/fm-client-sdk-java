@@ -83,7 +83,7 @@ public class PilotAdapter extends Adapter {
     }
 
     private void handleReleaseControl(ReleaseControl event) {
-        EndpointHandle ep = endpoints.get(event.getChannelId());
+        EndpointHandle ep = endpoints.get(event.getChannel());
         logger.info("Handling release control with policy {}", ep.getHoPolicy());
         switch (ep.getHoPolicy()) {
             case ALWAYS:
