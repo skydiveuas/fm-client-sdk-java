@@ -13,11 +13,13 @@ import org.json.JSONObject;
 @ToString
 public class OperateRequest {
 
-    private final String deviceId;
+    private final String device;
+    private final String serial;
 
     public JSONObject toJson() {
         JSONObject result = new JSONObject();
-        result.put("deviceId", deviceId);
+        result.put("device", device);
+        result.put("serial", serial);
         return result;
     }
 }

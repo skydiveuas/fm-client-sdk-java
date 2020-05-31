@@ -49,7 +49,10 @@ public class PilotAdapter extends Adapter {
                     .build();
             channels.add(channel);
         }
-        pilot.notifyEvent(new Operate(adapterConfig.getDevice(), channels));
+        pilot.notifyEvent(new Operate(
+                adapterConfig.getDevice(),
+                adapterConfig.getSerial(),
+                channels));
     }
 
     @Override

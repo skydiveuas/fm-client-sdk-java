@@ -20,12 +20,14 @@ import java.util.Collection;
  */
 public class Connecting extends State {
 
-    private String deviceId;
-    private Collection<ChannelRequest> channels;
+    private final String device;
+    private final String serial;
+    private final Collection<ChannelRequest> channels;
 
-    Connecting(State state, String deviceId, Collection<ChannelRequest> channels) {
+    Connecting(State state, String device, String serial, Collection<ChannelRequest> channels) {
         super(state);
-        this.deviceId = deviceId;
+        this.device = device;
+        this.serial = serial;
         this.channels = channels;
     }
 
@@ -34,8 +36,9 @@ public class Connecting extends State {
         try {
             FacadeResponse facadeResponse = backend.getCore().operate(
                     OperateRequest.builder()
-                    .deviceId(deviceId)
-                    .build());
+                            .device(device)
+                            .serial(serial)
+                            .build());
             backend.openFacadeConnection(facadeResponse);
             send(ClientMessage.newBuilder()
                     .setCommand(Command.SETUP)

@@ -1,6 +1,8 @@
 package com.fleetmgr.sdk.client.event.input.user;
 
 import com.fleetmgr.interfaces.ChannelRequest;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Collection;
 
@@ -9,31 +11,19 @@ import java.util.Collection;
  * Date: 18.09.2018
  * Description:
  */
+@Getter
+@ToString
 public class Operate extends UserEvent {
 
-    private String deviceId;
+    private final String device;
+    private final String serial;
 
-    private Collection<ChannelRequest> channels;
+    private final Collection<ChannelRequest> channels;
 
-    public Operate(String deviceId, Collection<ChannelRequest> channels) {
+    public Operate(String device, String serial, Collection<ChannelRequest> channels) {
         super(Type.OPERATE);
-        this.deviceId = deviceId;
+        this.device = device;
+        this.serial = serial;
         this.channels = channels;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public Collection<ChannelRequest> getChannels() {
-        return channels;
-    }
-
-    @Override
-    public String toString() {
-        return "Operate{" +
-                "deviceId=" + deviceId +
-                ", channels=" + channels +
-                '}';
     }
 }

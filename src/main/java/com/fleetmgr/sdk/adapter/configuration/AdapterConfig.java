@@ -44,6 +44,7 @@ public class AdapterConfig {
             throw new Exception("DeviceId and SerialId is mandatory when Role == PILOT");
         }
         result.setDevice(yaml.device);
+        result.setSerial(yaml.serial);
 
         if (yaml.api != null) {
             result.setApi(yaml.api.validate());
