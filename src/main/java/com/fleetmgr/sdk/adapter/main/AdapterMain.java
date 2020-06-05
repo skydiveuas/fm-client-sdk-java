@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
  */
 public class AdapterMain {
 
-    private static Representer representer = new Representer() {
+    private static final Representer representer = new Representer() {
         @Override
         protected NodeTuple representJavaBeanProperty(Object javaBean, Property property, Object propertyValue, Tag customTag) {
             // if value of property is null, ignore it.

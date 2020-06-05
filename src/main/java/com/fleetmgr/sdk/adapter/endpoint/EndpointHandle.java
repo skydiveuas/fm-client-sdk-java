@@ -117,6 +117,7 @@ public class EndpointHandle implements
             try {
                 endpoint = (Endpoint) Class
                         .forName(endpointConfig.getObject())
+                        .getDeclaredConstructor()
                         .newInstance();
                 endpoint.setController(this);
             } catch (Exception e) {
@@ -142,6 +143,7 @@ public class EndpointHandle implements
             try {
                 Filter filter = (Filter) Class
                         .forName(filterConfig.getObject())
+                        .getDeclaredConstructor()
                         .newInstance();
                 filter.initialize(filterConfig.getInput());
                 filter.setListener(this);
