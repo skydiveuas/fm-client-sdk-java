@@ -50,8 +50,8 @@ public class PilotAdapter extends Adapter {
             channels.add(channel);
         }
         pilot.notifyEvent(new Operate(
-                adapterConfig.getDevice(),
-                adapterConfig.getSerial(),
+                adapterConfig.getDeviceId(),
+                adapterConfig.getSerialId(),
                 channels));
     }
 
@@ -83,7 +83,7 @@ public class PilotAdapter extends Adapter {
     }
 
     private void handleReleaseControl(ReleaseControl event) {
-        EndpointHandle ep = endpoints.get(event.getChannel());
+        EndpointHandle ep = endpoints.get(event.getChannelId());
         logger.info("Handling release control with policy {}", ep.getHoPolicy());
         switch (ep.getHoPolicy()) {
             case ALWAYS:

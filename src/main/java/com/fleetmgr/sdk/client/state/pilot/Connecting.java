@@ -36,8 +36,8 @@ public class Connecting extends State {
         try {
             FacadeResponse facadeResponse = backend.getCore().operate(
                     OperateRequest.builder()
-                            .device(device)
-                            .serial(serial)
+                            .deviceId(device)
+                            .serialId(serial)
                             .build());
             backend.openFacadeConnection(facadeResponse);
             send(ClientMessage.newBuilder()

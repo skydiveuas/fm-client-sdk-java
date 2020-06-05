@@ -37,9 +37,9 @@ public class Disconnected extends State {
             case OPERATE:
                 Operate operate = (Operate)event;
                 return new Connecting(this,
-                        operate.getDevice(),
-                        operate.getSerial(),
-                        operate.getChannels());
+                        operate.getDeviceId(),
+                        operate.getSerialId(),
+                        operate.getChannelIds());
 
             default:
                 return defaultEventHandle(event.toString());

@@ -15,15 +15,15 @@ import java.util.Collection;
 @ToString
 public class Operate extends UserEvent {
 
-    private final String device;
-    private final String serial;
+    private final String deviceId;
+    private final String serialId;
 
-    private final Collection<ChannelRequest> channels;
+    private final Collection<ChannelRequest> channelIds;
 
-    public Operate(String device, String serial, Collection<ChannelRequest> channels) {
+    public Operate(String deviceId, String serialId, Collection<ChannelRequest> channelIds) {
         super(Type.OPERATE);
-        this.device = device;
-        this.serial = serial;
-        this.channels = channels;
+        this.deviceId = deviceId;
+        this.serialId = serialId;
+        this.channelIds = channelIds;
     }
 }

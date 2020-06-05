@@ -1,7 +1,6 @@
 package com.fleetmgr.sdk.client.core.model;
 
-import lombok.Builder;
-import lombok.ToString;
+import lombok.*;
 import org.json.JSONObject;
 
 /**
@@ -9,17 +8,21 @@ import org.json.JSONObject;
  * Date: 14.05.2020
  * Description:
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @ToString
 public class OperateRequest {
 
-    private final String device;
-    private final String serial;
+    private String deviceId;
+    private String serialId;
 
     public JSONObject toJson() {
         JSONObject result = new JSONObject();
-        result.put("device", device);
-        result.put("serial", serial);
+        result.put("deviceId", deviceId);
+        result.put("serialId", serialId);
         return result;
     }
 }

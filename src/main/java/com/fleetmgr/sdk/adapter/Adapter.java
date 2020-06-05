@@ -94,7 +94,7 @@ public abstract class Adapter implements
     }
 
     private void handleChannelsOpened(ChannelsOpened event) {
-        for (Channel c : event.getChannels()) {
+        for (Channel c : event.getChannelIds()) {
             List<ChannelConfig> list =
                     adapterConfig.getChannels().values().stream()
                             .filter(o -> o.getId().equals(c.getId()))
@@ -119,7 +119,7 @@ public abstract class Adapter implements
     }
 
     private void handleChannelsClosing(ChannelsClosing event) {
-        for (Channel c : event.getChannels()) {
+        for (Channel c : event.getChannelIds()) {
             endpoints.computeIfPresent(c.getId(), (k, v) -> {
                 logger.info("Shutdown {}", v);
                 v.shutdown();

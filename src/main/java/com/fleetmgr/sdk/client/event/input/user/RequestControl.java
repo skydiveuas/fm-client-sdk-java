@@ -12,10 +12,10 @@ import lombok.ToString;
 @ToString
 public class RequestControl extends UserEvent {
 
-    private final Long channel;
+    private final Long channelId;
 
-    public RequestControl(long channel) {
+    public RequestControl(long channelId) {
         super(Type.REQUEST_CONTROL);
-        this.channel = channel;
+        this.channelId = channelId;
     }
 }

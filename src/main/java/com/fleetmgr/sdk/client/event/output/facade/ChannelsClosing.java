@@ -15,10 +15,10 @@ import java.util.Collection;
 @ToString
 public class ChannelsClosing extends FacadeEvent {
 
-    private final Collection<Channel> channels;
+    private final Collection<Channel> channelIds;
 
-    public ChannelsClosing(Collection<Channel> channels) {
+    public ChannelsClosing(Collection<Channel> channelIds) {
         super(Type.CHANNELS_CLOSING);
-        this.channels = channels;
+        this.channelIds = channelIds;
     }
 }

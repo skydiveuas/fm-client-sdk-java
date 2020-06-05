@@ -37,15 +37,15 @@ public class Operating extends State {
         switch (event.getType()) {
             case OPEN_CHANNELS:
                 OpenChannels openChannels = (OpenChannels)event;
-                return new OpeningChannels(this, openChannels.getChannels());
+                return new OpeningChannels(this, openChannels.getChannelIds());
 
             case CLOSE_CHANNELS:
                 CloseChannels closeChannels = (CloseChannels)event;
-                return new ClosingChannels(this, closeChannels.getChannels());
+                return new ClosingChannels(this, closeChannels.getChannelIds());
 
             case REQUEST_CONTROL:
                 RequestControl requestControl = (RequestControl)event;
-                return new RequestingControl(this, requestControl.getChannel());
+                return new RequestingControl(this, requestControl.getChannelId());
 
             case RELEASE:
                 // release is considered as wildcard for closing all channels

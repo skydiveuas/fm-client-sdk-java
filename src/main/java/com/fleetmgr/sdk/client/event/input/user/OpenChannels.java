@@ -16,10 +16,10 @@ import java.util.Collection;
 @ToString
 public class OpenChannels extends UserEvent {
 
-    private final Collection<ChannelRequest> channels;
+    private final Collection<ChannelRequest> channelIds;
 
-    public OpenChannels(Collection<ChannelRequest> channels) {
+    public OpenChannels(Collection<ChannelRequest> channelIds) {
         super(Type.OPEN_CHANNELS);
-        this.channels = channels;
+        this.channelIds = channelIds;
     }
 }

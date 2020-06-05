@@ -12,10 +12,10 @@ import lombok.ToString;
 @ToString
 public class ReleaseControl extends FacadeEvent {
 
-    private final Long channel;
+    private final Long channelId;
 
-    public ReleaseControl(Long channel) {
+    public ReleaseControl(Long channelId) {
         super(Type.RELEASE_CONTROL);
-        this.channel = channel;
+        this.channelId = channelId;
     }
 }

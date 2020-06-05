@@ -14,10 +14,10 @@ import java.util.Collection;
 @ToString
 public class CloseChannels extends UserEvent {
 
-    private final Collection<Long> channels;
+    private final Collection<Long> channelIds;
 
-    public CloseChannels(Collection<Long> channels) {
+    public CloseChannels(Collection<Long> channelIds) {
         super(Type.CLOSE_CHANNELS);
-        this.channels = channels;
+        this.channelIds = channelIds;
     }
 }

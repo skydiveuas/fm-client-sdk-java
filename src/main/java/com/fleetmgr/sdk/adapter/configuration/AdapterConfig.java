@@ -21,8 +21,8 @@ import java.util.Map;
 public class AdapterConfig {
 
     private Role role;
-    private String device;
-    private String serial;
+    private String deviceId;
+    private String serialId;
     private ApiConfig api;
     private LocationConfig location;
     private CoreConfig core;
@@ -40,11 +40,11 @@ public class AdapterConfig {
         }
         result.setRole(yaml.role);
 
-        if (result.getRole() == Role.PILOT && yaml.device == null && yaml.serial == null) {
+        if (result.getRole() == Role.PILOT && yaml.deviceId == null && yaml.serialId == null) {
             throw new Exception("DeviceId and SerialId is mandatory when Role == PILOT");
         }
-        result.setDevice(yaml.device);
-        result.setSerial(yaml.serial);
+        result.setDeviceId(yaml.deviceId);
+        result.setSerialId(yaml.serialId);
 
         if (yaml.api != null) {
             result.setApi(yaml.api.validate());
