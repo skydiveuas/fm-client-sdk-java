@@ -1,6 +1,7 @@
 package com.fleetmgr.sdk.adapter.main;
 
 import com.fleetmgr.sdk.adapter.Adapter;
+import com.fleetmgr.sdk.adapter.ShutdownListener;
 import com.fleetmgr.sdk.adapter.client.DeviceAdapter;
 import com.fleetmgr.sdk.adapter.client.PilotAdapter;
 import com.fleetmgr.sdk.adapter.configuration.AdapterConfig;
@@ -27,19 +28,28 @@ public class AdapterController {
     }
 
     public void start() throws Exception {
+        start(null);
+    }
+    
+    public void start(ShutdownListener shutdownListener) throws Exception {
         Adapter adapter;
         switch (adapterConfig.getRole()) {
             case DEVICE:
-                adapter = new DeviceAdapter(executor, adapterConfig);
+                DeviceAdapter deviceAdapter = new DeviceAdapter(executor, adapterConfig);
+                deviceAdapter.setShutdownListener(shutdownListener);
+                adapter = deviceAdapter;
                 break;
 
             case PILOT:
-                adapter = new PilotAdapter(executor, adapterConfig);
+                PilotAdapter pilotAdapter = new PilotAdapter(executor, adapterConfig);
+                pilotAdapter.setShutdownListener(shutdownListener);
+                adapter = pilotAdapter;
                 break;
 
             default:
                 throw new Exception("Unexpected Role");
         }
+        adapter.setShutdownListener(shutdownListener);
         adapter.start();
     }
 }

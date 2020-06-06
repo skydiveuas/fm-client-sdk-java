@@ -38,19 +38,19 @@ public abstract class Adapter implements
     private static final Logger logger = LoggerFactory.getLogger(Adapter.class);
 
     @Getter
-    protected
-    AdapterConfig adapterConfig;
+    protected AdapterConfig adapterConfig;
     @Getter
-    protected
-    ExecutorService executor;
+    protected ExecutorService executor;
+
+    @Setter
+    protected ShutdownListener shutdownListener;
 
     @Getter
-    protected
-    HashMap<Long, EndpointHandle> endpoints;
+    protected HashMap<Long, EndpointHandle> endpoints;
 
     @Setter
     @Getter
-    Location location;
+    protected Location location;
 
     protected Adapter(ExecutorService executor, AdapterConfig adapterConfig) {
         this.executor = executor;
