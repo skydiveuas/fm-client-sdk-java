@@ -75,7 +75,7 @@ public class CoreClient {
         JSONArray response = client.execute(get, JSONArray.class);
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
-            result.add(response.getJSONObject(i).getString("device"));
+            result.add(response.getJSONObject(i).getString("sessionId"));
         }
         return result;
     }
