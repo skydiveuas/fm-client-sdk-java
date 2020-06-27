@@ -1,5 +1,8 @@
 package com.fleetmgr.sdk.adapter.main;
 
+import com.fleetmgr.sdk.adapter.Adapter;
+import com.fleetmgr.sdk.adapter.client.DeviceAdapter;
+import com.fleetmgr.sdk.adapter.client.PilotAdapter;
 import com.fleetmgr.sdk.adapter.configuration.AdapterConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,10 +74,23 @@ public class AdapterMain {
         logger.info("Configuration:\n{}", yaml.dump(adapterConfig));
 
         ExecutorService executor = Executors.newCachedThreadPool();
-        AdapterController adapterController = new AdapterController(adapterConfig, executor);
 
+        Adapter adapter;
         try {
-            adapterController.start();
+            switch (adapterConfig.getRole()) {
+                case DEVICE:
+                    adapter = new DeviceAdapter(executor, adapterConfig);
+                    break;
+
+                case PILOT:
+                    adapter = new PilotAdapter(executor, adapterConfig);
+                    break;
+
+                default:
+                    throw new Exception("Unexpected Role");
+            }
+            adapter.start();
+
         } catch (Exception e) {
             logger.error("", e);
             executor.shutdownNow();

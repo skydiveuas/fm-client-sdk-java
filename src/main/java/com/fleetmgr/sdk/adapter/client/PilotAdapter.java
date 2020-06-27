@@ -71,23 +71,20 @@ public class PilotAdapter extends Adapter {
                 break;
 
             case RELEASED:
-                if (shutdownListener != null) {
-                    shutdownListener.onRelease();
-                } else {
+                if (adapterListener.isPresent()) {
                     logger.info("Shutting Adapter due to Edge connection release");
                     System.exit(0);
                 }
                 break;
 
             case ERROR:
-                if (shutdownListener != null) {
-                    shutdownListener.onError(((Error)event).getThrowable());
-                } else {
+                if (adapterListener.isPresent()) {
                     logger.error("Shutting Adapter after failure", ((Error)event).getThrowable());
                     System.exit(-1);
                 }
                 break;
         }
+        adapterListener.ifPresent((l) -> l.onEvent(event));
     }
 
     private void handleReleaseControl(ReleaseControl event) {

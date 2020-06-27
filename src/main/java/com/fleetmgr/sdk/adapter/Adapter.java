@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
@@ -42,8 +43,8 @@ public abstract class Adapter implements
     @Getter
     protected ExecutorService executor;
 
-    @Setter
-    protected ShutdownListener shutdownListener;
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    protected Optional<AdapterListener> adapterListener = Optional.empty();
 
     @Getter
     protected HashMap<Long, EndpointHandle> endpoints;
@@ -73,6 +74,10 @@ public abstract class Adapter implements
                     .setAltitude(adapterConfig.getLocation().getAlt())
                     .build();
         }
+    }
+
+    public void setAdapterListener(AdapterListener listener) {
+        adapterListener = Optional.of(listener);
     }
 
     public abstract void start() throws Exception;
