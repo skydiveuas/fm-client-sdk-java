@@ -39,16 +39,19 @@ public class DeviceAdapter extends Adapter {
         switch (event.getType()) {
             case RELEASED:
             case ERROR:
-                executor.execute(() -> {
-                    logger.info("Waiting 30s before reconnection");
-                    try {
-                        Thread.sleep(30000);
-                    } catch (InterruptedException ignore) {
-                    }
-                    device.notifyEvent(new UserEvent(UserEvent.Type.ATTACH));
-                });
+                if (!adapterListener.isPresent()) {
+                    executor.execute(() -> {
+                        logger.info("Waiting 30s before reconnection");
+                        try {
+                            Thread.sleep(30000);
+                        } catch (InterruptedException ignore) {
+                        }
+                        device.notifyEvent(new UserEvent(UserEvent.Type.ATTACH));
+                    });
+                }
                 break;
         }
+        adapterListener.ifPresent((l) -> l.onEvent(event));
     }
 
     @Override
