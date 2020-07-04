@@ -3,9 +3,6 @@ package com.fleetmgr.sdk.adapter;
 import com.fleetmgr.sdk.client.Client;
 import com.fleetmgr.sdk.client.event.input.user.ReleaseRejected;
 import com.fleetmgr.sdk.client.event.input.user.UserEvent;
-import com.fleetmgr.sdk.client.event.output.facade.FacadeEvent;
-import com.fleetmgr.sdk.client.event.output.facade.ReleaseControl;
-import com.fleetmgr.sdk.client.traffic.Channel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,8 +15,11 @@ public abstract class Endpoint {
 
     public interface Controller {
         Client getClient();
+        Long getChannelId();
         void send(byte[] data, int size);
     }
+
+    protected String prefix = toString();
 
     @Setter
     @Getter
@@ -34,5 +34,10 @@ public abstract class Endpoint {
     public UserEvent handleHoRequest() {
         return new ReleaseRejected("Endpoint does not support Channel HO," +
                 " verify Endpoint object implementation");
+    }
+
+    @Override
+    public String toString() {
+        return getController().toString() + getClass().getCanonicalName();
     }
 }

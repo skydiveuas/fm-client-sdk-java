@@ -29,6 +29,7 @@ public class FacadeEvent {
         OPERATION_ENDED,
         UNREACHABLE,
         CONNECTION_RECOVERED,
+        USER_DEFINED,
     }
 
     private final Type type;

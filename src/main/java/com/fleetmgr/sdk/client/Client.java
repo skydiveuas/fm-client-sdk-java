@@ -48,6 +48,10 @@ public abstract class Client extends StateMachine<Event> {
         this.backend = new ClientBackend(executor, configuration,this, listener);
     }
 
+    public void onEvent(FacadeEvent event) {
+        backend.getClientListener().onEvent(event);
+    }
+
     public ClientMessage verifySending(ClientMessage message) {
         return message;
     }

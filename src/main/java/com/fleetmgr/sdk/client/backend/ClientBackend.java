@@ -16,6 +16,8 @@ import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
 import io.grpc.stub.StreamObserver;
+import lombok.Getter;
+import lombok.Setter;
 import org.cfg4j.provider.ConfigurationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,18 +36,27 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientBackend.class);
 
+    @Getter
     private final ExecutorService executor;
+    @Getter
     private final ConfigurationProvider configuration;
 
-    private Client client;
-    private Client.Listener clientListener;
+    @Getter
+    private final Client client;
+    @Getter
+    private final Client.Listener clientListener;
 
-    private CoreClient core;
+    @Getter
+    private final CoreClient core;
 
+    @Setter
+    @Getter
     private SetupResponse setupResponse;
 
-    private HeartbeatHandler heartbeatHandler;
-    private ChannelsHandler channelsHandler;
+    @Getter
+    private final HeartbeatHandler heartbeatHandler;
+    @Getter
+    private final ChannelsHandler channelsHandler;
 
     private ManagedChannel channel;
     private StreamObserver<ClientMessage> toFacade;
@@ -66,40 +77,8 @@ public class ClientBackend implements StreamObserver<ControlMessage> {
         this.channelsHandler = new ChannelsHandler(this);
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public ExecutorService getExecutor() {
-        return executor;
-    }
-
-    public ConfigurationProvider getConfiguration() {
-        return configuration;
-    }
-
-    public CoreClient getCore() {
-        return core;
-    }
-
-    public HeartbeatHandler getHeartbeatHandler() {
-        return heartbeatHandler;
-    }
-
-    public ChannelsHandler getChannelsHandler() {
-        return channelsHandler;
-    }
-
     Location getLocation() {
         return clientListener.getLocation();
-    }
-
-    public void setSetupResponse(SetupResponse setupResponse) {
-        this.setupResponse = setupResponse;
-    }
-
-    public SetupResponse getSetupResponse() {
-        return setupResponse;
     }
 
     public void openFacadeConnection(FacadeResponse facadeResponse) throws IOException {
