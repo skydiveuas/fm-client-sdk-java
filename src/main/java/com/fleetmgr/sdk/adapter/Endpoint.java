@@ -16,7 +16,6 @@ public abstract class Endpoint {
     public interface Controller {
         Client getClient();
         Long getChannelId();
-
         void send(byte[] data, int size);
         void onEvent(EndpointEvent endpointEvent);
     }
@@ -40,6 +39,6 @@ public abstract class Endpoint {
 
     @Override
     public String toString() {
-        return getController().toString() + getClass().getCanonicalName();
+        return getClass().getCanonicalName();
     }
 }
