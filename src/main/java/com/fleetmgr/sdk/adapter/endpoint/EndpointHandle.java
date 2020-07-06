@@ -1,6 +1,7 @@
 package com.fleetmgr.sdk.adapter.endpoint;
 
 import com.fleetmgr.sdk.adapter.Adapter;
+import com.fleetmgr.sdk.adapter.EndpointEvent;
 import com.fleetmgr.sdk.adapter.configuration.ChannelConfig;
 import com.fleetmgr.sdk.adapter.configuration.EndpointConfig;
 import com.fleetmgr.sdk.adapter.configuration.FilterConfig;
@@ -74,6 +75,11 @@ public class EndpointHandle implements
     }
 
     @Override
+    public Long getChannelId() {
+        return channel.getId();
+    }
+
+    @Override
     public Client getClient() {
         return adapter.getClient();
     }
@@ -89,6 +95,11 @@ public class EndpointHandle implements
         } catch (IOException e) {
             logger.error("Could not send data over {}", this, e);
         }
+    }
+
+    @Override
+    public void onEvent(EndpointEvent endpointEvent) {
+        adapter.onEndpointEvent(endpointEvent);
     }
 
     @Override

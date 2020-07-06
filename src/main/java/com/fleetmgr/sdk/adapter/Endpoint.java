@@ -16,7 +16,9 @@ public abstract class Endpoint {
     public interface Controller {
         Client getClient();
         Long getChannelId();
+
         void send(byte[] data, int size);
+        void onEvent(EndpointEvent endpointEvent);
     }
 
     protected String prefix = toString();

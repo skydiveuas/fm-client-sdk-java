@@ -13,8 +13,6 @@ import com.fleetmgr.interfaces.facade.control.Command;
 import com.fleetmgr.interfaces.facade.control.ControlMessage;
 import com.fleetmgr.interfaces.facade.control.Response;
 
-import java.util.Collections;
-
 /**
  * Created by: Bartosz Nawrot
  * Date: 23.09.2018

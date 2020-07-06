@@ -51,7 +51,7 @@ public class DeviceAdapter extends Adapter {
                 }
                 break;
         }
-        adapterListener.ifPresent((l) -> l.onEvent(event));
+        adapterListener.ifPresent(l -> l.onFacadeEvent(event));
     }
 
     @Override

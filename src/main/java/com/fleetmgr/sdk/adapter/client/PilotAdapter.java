@@ -84,7 +84,7 @@ public class PilotAdapter extends Adapter {
                 }
                 break;
         }
-        adapterListener.ifPresent((l) -> l.onEvent(event));
+        adapterListener.ifPresent(l -> l.onFacadeEvent(event));
     }
 
     private void handleReleaseControl(ReleaseControl event) {

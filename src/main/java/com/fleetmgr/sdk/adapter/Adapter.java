@@ -98,6 +98,10 @@ public abstract class Adapter implements
         }
     }
 
+    public void onEndpointEvent(EndpointEvent endpointEvent) {
+        adapterListener.ifPresent(l -> l.onEndpointEvent(endpointEvent));
+    }
+
     private void handleChannelsOpened(ChannelsOpened event) {
         for (Channel c : event.getChannelIds()) {
             List<ChannelConfig> list =
